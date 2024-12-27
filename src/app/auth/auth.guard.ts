@@ -4,17 +4,14 @@ import {inject} from '@angular/core';
 import {map} from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService); // Se inyecta el servicio de autenticación
-  const router = inject(Router); // Se inyecta el router para redirigir si no está autenticado
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  // Verificamos el estado del usuario antes de permitir la navegación
   return authService.getAuthState().pipe(
     map(user => {
       if (user) {
-        // El usuario está autenticado, se puede acceder a la ruta
         return true;
       } else {
-        // El usuario no está autenticado, se redirige al login
         router.navigate(['/login']);
         return false;
       }
