@@ -6,13 +6,13 @@ import {HomeComponent} from './home/home.component';
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent, // Página de login
+    component: LoginComponent,
     pathMatch: 'full',
   },
   {
     path: 'home',
-    component: HomeComponent, // Página principal
-    canActivate: [authGuard], // Solo puede acceder si está autenticado
+    component: HomeComponent,
+    canActivate: [authGuard],
   },
   {
     path: '',
@@ -20,7 +20,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: '**', // Ruta comodín para redirigir a login si no se encuentra la ruta
+    path: '**',
     redirectTo: '/login',
   },
 ];

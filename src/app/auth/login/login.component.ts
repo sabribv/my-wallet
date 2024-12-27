@@ -38,15 +38,6 @@ export class LoginComponent {
       this.authService.login(email, password).subscribe(() => {
         this.router.navigate(['/']);
       });
-
-      // Lógica de autenticación
-      // Aquí usarías Firebase Auth o cualquier otro servicio para verificar el login
-      // Ejemplo con Firebase Auth:
-      // authService.login(email, password).then(() => {
-      this.router.navigate(['/home']);
-      // }).catch(error => {
-      //   this.snackBar.open(error.message, 'Cerrar', { duration: 3000 });
-      // });
     } else {
       this.snackBar.open('Por favor, complete el formulario correctamente', 'Cerrar', { duration: 3000 });
     }
