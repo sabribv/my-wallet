@@ -31,13 +31,16 @@ export class LoginComponent {
     });
   }
 
-  onLogin() {
+  async onLogin() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
 
-      this.authService.login(email, password).subscribe(() => {
-        this.router.navigate(['/']);
-      });
+      try {
+        await this.authService.login(email, password);
+        void this.router.navigate(['/']);
+      } catch (error) {
+        this.snackBar.open('Las credenciales no son válidas.', 'Error', { duration: 3000 })
+      }
     } else {
       this.snackBar.open('Por favor, complete el formulario correctamente', 'Cerrar', { duration: 3000 });
     }
