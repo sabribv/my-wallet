@@ -1,0 +1,67 @@
+<div class="bills-container">
+  <h1>Gastos del Mes</h1>
+  <button mat-raised-button color="primary" (click)="openBillDialog()">Agregar Gasto</button>
+
+  <div class="bills-table" *ngIf="bills$ | async as bills">
+  <table mat-table [dataSource]="bills" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre del Gasto </th>
+      <td mat-cell *matCellDef="let bill"> {{ bill.expense?.name || 'Sin categoría' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="paymentType">
+      <th mat-header-cell *matHeaderCellDef> Tipo de Pago </th>
+      <td mat-cell *matCellDef="let bill"> {{ bill.expense?.paymentType || '-' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef> Monto </th>
+      <td mat-cell *matCellDef="let bill"> {{ bill.amount | currency }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dueDate">
+      <th mat-header-cell *matHeaderCellDef> Fecha de Vencimiento </th>
+      <td mat-cell *matCellDef="let bill">
+        {{ bill.dueDate | date: 'shortDate' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let bill">
+        {{ bill.isPaid ? 'Pagado' : 'Pendiente' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let bill">
+        <button mat-icon-button color="warn" (click)="deleteBill(bill.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="openBillDialog(bill)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  </div>
+
+<!--  <mat-list>-->
+<!--    <mat-list-item *ngFor="let bill of bills$ | async">-->
+<!--      <div mat-line>{{ bill.dueDate | date: 'shortDate' }} - {{ bill.amount | currency }}</div>-->
+<!--      <div mat-line>-->
+<!--        {{ bill.isPaid ? 'Pagado' : 'Pendiente' }}-->
+<!--      </div>-->
+<!--      <button mat-icon-button color="primary" (click)="openBillDialog(bill)">-->
+<!--        <mat-icon>edit</mat-icon>-->
+<!--      </button>-->
+<!--      <button mat-icon-button color="warn" (click)="deleteBill(bill.id)">-->
+<!--        <mat-icon>delete</mat-icon>-->
+<!--      </button>-->
+<!--    </mat-list-item>-->
+<!--  </mat-list>-->
+</div>

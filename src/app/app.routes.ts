@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
-import {LoginComponent} from './auth/login/login.component';
-import {authGuard} from './auth/auth.guard';
-import {HomeComponent} from './home/home.component';
-import {LayoutComponent} from './layout/layout/layout.component';
+import {LoginComponent} from '@components/auth/login/login.component';
+import {authGuard} from './guards/auth.guard';
+import {HomeComponent} from '@components/home/home.component';
+import {LayoutComponent} from '@components/layout/layout/layout.component';
+import {ExpensesComponent} from '@components/expenses/expenses/expenses.component';
+import {BillsComponent} from '@components/bills/bills/bills.component';
 
 export const routes: Routes = [
   {
@@ -16,31 +18,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home', component: HomeComponent },
-      // {
-      //   path: 'profile',
-      //   loadComponent: () =>
-      //     import('./profile/profile.component').then((m) => m.ProfileComponent),
-      // },
-      // {
-      //   path: 'settings',
-      //   loadComponent: () =>
-      //     import('./settings/settings.component').then(
-      //       (m) => m.SettingsComponent
-      //     ),
-      // },
+      { path: 'expenses', component: ExpensesComponent },
+      { path: 'bills', component: BillsComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
-  // {
-  //   path: 'home',
-  //   component: HomeComponent,
-  //   canActivate: [authGuard],
-  // },
-  // {
-  //   path: '',
-  //   redirectTo: '/home',
-  //   pathMatch: 'full',
-  // },
   {
     path: '**',
     redirectTo: '/login',
