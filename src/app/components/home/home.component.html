@@ -1,0 +1,31 @@
+<div *ngIf="bills$ | async" class="home-container">
+  <ng-container *ngIf="overdueBills.length > 0">
+    <h2>Bills Overdue</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let bill of overdueBills">
+        <div class="bill-item">
+          <div>
+            <h3>{{ bill.expense?.name || 'Sin nombre' }}</h3>
+            <p>{{ bill.amount | currency }}</p>
+            <p>{{ bill.dueDate | date: 'shortDate' }}</p>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </ng-container>
+
+  <ng-container *ngIf="upcomingBills.length > 0">
+    <h2>Upcoming Bills</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let bill of upcomingBills">
+        <div class="bill-item">
+          <div>
+            <h3>{{ bill.expense?.name || 'Sin nombre' }}</h3>
+            <p>{{ bill.amount | currency }}</p>
+            <p>{{ bill.dueDate | date: 'shortDate' }}</p>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </ng-container>
+</div>
