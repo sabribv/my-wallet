@@ -1,0 +1,22 @@
+:host {
+  .home-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bill-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .bill-line {
+    margin-top: 8px;
+  }
+
+  .spacer {
+    width: 100%;
+  }
+}

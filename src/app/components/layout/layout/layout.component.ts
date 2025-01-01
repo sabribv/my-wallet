@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterModule, RouterOutlet} from '@angular/router';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
-import {NgFor} from '@angular/common';
+import {CommonModule, NgFor} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {AuthService} from '@services/auth.service';
+import {LayoutService} from '@services/layout.service';
 
 @Component({
   selector: 'app-layout',
@@ -18,17 +19,19 @@ import {AuthService} from '@services/auth.service';
     MatToolbarModule,
     MatIconModule,
     MatListModule,
-    NgFor,
+    CommonModule,
     MatIconButton,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
+  layoutService = inject(LayoutService);
+  isHandset$ = this.layoutService.isHandset$;
   routes = [
     { path: '/home', label: 'Home', icon: 'home' },
-    { path: '/expenses', label: 'Configurar gastos', icon: 'person' },
-    { path: '/bills', label: 'Bills', icon: 'settings' },
+    { path: '/bills', label: 'Gastos mensuales', icon: 'payments' },
+    { path: '/expenses', label: 'Gastos', icon: 'settings' },
   ];
 
   constructor(private authService: AuthService) { }

@@ -1,67 +1,95 @@
 <div class="bills-container">
-  <h1>Gastos del Mes</h1>
-  <button mat-raised-button color="primary" (click)="openBillDialog()">Agregar Gasto</button>
-
-  <div class="bills-table" *ngIf="bills$ | async as bills">
-  <table mat-table [dataSource]="bills" class="mat-elevation-z8">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nombre del Gasto </th>
-      <td mat-cell *matCellDef="let bill"> {{ bill.expense?.name || 'Sin categoría' }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="paymentType">
-      <th mat-header-cell *matHeaderCellDef> Tipo de Pago </th>
-      <td mat-cell *matCellDef="let bill"> {{ bill.expense?.paymentType || '-' }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef> Monto </th>
-      <td mat-cell *matCellDef="let bill"> {{ bill.amount | currency }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="dueDate">
-      <th mat-header-cell *matHeaderCellDef> Fecha de Vencimiento </th>
-      <td mat-cell *matCellDef="let bill">
-        {{ bill.dueDate | date: 'shortDate' }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Estado </th>
-      <td mat-cell *matCellDef="let bill">
-        {{ bill.isPaid ? 'Pagado' : 'Pendiente' }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let bill">
-        <button mat-icon-button color="warn" (click)="deleteBill(bill.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" (click)="openBillDialog(bill)">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+  <div class="title">
+    <h2>Gastos</h2>
+    <button mat-fab color="primary" routerLink="/bills/create">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 
-<!--  <mat-list>-->
-<!--    <mat-list-item *ngFor="let bill of bills$ | async">-->
-<!--      <div mat-line>{{ bill.dueDate | date: 'shortDate' }} - {{ bill.amount | currency }}</div>-->
-<!--      <div mat-line>-->
-<!--        {{ bill.isPaid ? 'Pagado' : 'Pendiente' }}-->
-<!--      </div>-->
-<!--      <button mat-icon-button color="primary" (click)="openBillDialog(bill)">-->
-<!--        <mat-icon>edit</mat-icon>-->
-<!--      </button>-->
-<!--      <button mat-icon-button color="warn" (click)="deleteBill(bill.id)">-->
-<!--        <mat-icon>delete</mat-icon>-->
-<!--      </button>-->
-<!--    </mat-list-item>-->
-<!--  </mat-list>-->
+  <div class="month-year-picker">
+    <mat-form-field>
+      <mat-label>Mes y Año</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [readonly]="true"
+        [value]="selectedDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker
+        #picker
+        startView="multi-year"
+        (monthSelected)="selectMonthAndYear($event, picker)"
+        panelClass="month-year-picker-panel"
+      ></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <ng-container *ngIf="cashBills$ | async as cashBills">
+    <ng-template
+      [ngTemplateOutlet]="billsTemplate"
+      [ngTemplateOutletContext]="{ title: 'Efectivo', bills: cashBills }">
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="debitBills$ | async as debitBills">
+    <ng-template
+      [ngTemplateOutlet]="billsTemplate"
+      [ngTemplateOutletContext]="{ title: 'Débito', bills: debitBills }">
+    </ng-template>
+  </ng-container>
+
+  <ng-template #billsTemplate let-title="title" let-bills="bills">
+    <mat-card class="section" *ngIf="bills.length > 0">
+      <mat-card-header>
+        <mat-card-title>
+          {{ title }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list *ngFor="let bill of bills">
+          <mat-list-item>
+            <div matListItemTitle class="bill-title">
+              <span>{{ bill.expense?.name }}</span>
+              <span class="spacer"></span>
+              <span>{{ bill.amount | currency}}</span>
+              <button mat-icon-button class="context-menu"
+                      [matMenuTriggerFor]="contextMenu"
+                      [matMenuTriggerData]="{ bill: bill }">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+            <span matListItemLine class="bill-line">
+              <span>{{ bill.dueDate | date}}</span>
+              <span class="spacer"></span>
+              <ng-container *ngIf="bill.isPaid; else pendingTemplate">
+                <app-status-indicator text="Pagado"></app-status-indicator>
+              </ng-container>
+              <ng-template #pendingTemplate>
+                <ng-container *ngIf="bill.dueDate > today; else overdueTemplate">
+                  <app-status-indicator text="Pendiente" type="warning"></app-status-indicator>
+                </ng-container>
+                <ng-template #overdueTemplate>
+                  <app-status-indicator text="Vencido" type="error"></app-status-indicator>
+                </ng-template>
+              </ng-template>
+            </span>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
+
+  <mat-menu #contextMenu="matMenu">
+    <ng-template matMenuContent let-bill="bill">
+    <button mat-menu-item [routerLink]="['/bills/edit', bill.id]">
+      <mat-icon>edit</mat-icon>
+      <span>Editar</span>
+    </button>
+    <button mat-menu-item (click)="deleteBill(bill.id)">
+      <mat-icon>delete</mat-icon>
+      <span>Eliminar</span>
+    </button>
+    </ng-template>
+  </mat-menu>
 </div>

@@ -9,22 +9,29 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {Observable, take} from 'rxjs';
 import {Expense} from '@models/expense.model';
+import {MatListModule} from '@angular/material/list';
+import {RouterLink} from '@angular/router';
+import {MatCard, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} from '@angular/material/card';
+import {MatMenu, MatMenuContent, MatMenuItem, MatMenuModule} from '@angular/material/menu';
+import {StatusIndicatorComponent} from '@components/misc/status-indicator/status-indicator.component';
 
 @Component({
   selector: 'app-expenses',
   standalone: true,
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatTableModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule,
+    RouterLink,
+    MatCardModule,
+    MatMenuModule,
+    StatusIndicatorComponent,
   ],
   templateUrl: './expenses.component.html',
   styleUrls: ['./expenses.component.scss'],
 })
 export class ExpensesComponent {
-  displayedColumns: string[] = ['name', 'type', 'actions'];
   expenses$: Observable<Expense[]>;
 
   constructor(private dialog: MatDialog, private expenseService: ExpenseService) {
@@ -48,7 +55,11 @@ export class ExpensesComponent {
     });
   }
 
-  deleteExpense(id: string): void {
+  deleteExpense(id: string | undefined): void {
+    if (!id) {
+      console.warn('El ID del bill no es válido');
+      return;
+    }
     this.expenseService.deleteExpense(id);
   }
 }

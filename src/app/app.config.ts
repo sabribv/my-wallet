@@ -10,6 +10,11 @@ import {FIREBASE_OPTIONS} from '@angular/fire/compat';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideServiceWorker } from '@angular/service-worker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import { MatFormFieldDefaultOptions, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+
+const appearance: MatFormFieldDefaultOptions = {
+  appearance: 'outline'
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +30,9 @@ export const appConfig: ApplicationConfig = {
       registrationStrategy: 'registerWhenStable:30000'
     }),
     importProvidersFrom(MatMomentDateModule),
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: appearance
+    }
   ]
 };
