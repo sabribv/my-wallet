@@ -1,0 +1,13 @@
+:host {
+  .form-container {
+    max-width: 400px;
+    margin: auto;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 1rem;
+  }
+}

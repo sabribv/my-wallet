@@ -1,22 +1,59 @@
-.sidenav-container {
-  display: flex;
-  height: 100vh;
-}
+@use '@angular/material' as mat;
 
-.sidenav-content {
-  width: 100%;
-}
+  .sidenav-container {
+    display: flex;
+    height: 100vh;
 
-.mat-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    .sidenav-panel {
+      min-width: 320px;
+    }
 
-.content {
-  padding: 16px;
-}
+    .sidenav-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+  }
 
-.spacer {
-  flex: 1 1 auto;
-}
+  .sidenav-content {
+    width: 100%;
+  }
+
+  .mat-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px;
+    border-top: 1px solid map-get(mat.$m2-blue-palette, 500);
+    box-sizing: border-box;
+
+    .menu-item {
+      color: map-get(mat.$m2-gray-palette, 700);
+
+      &.active {
+        color: map-get(mat.$m2-blue-palette, 500);
+      }
+    }
+  }
+
+  .mobile-container {
+    padding: 16px;
+  }

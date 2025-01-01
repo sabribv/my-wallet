@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+
+:host {
+  .bills-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .month-year-picker {
+    mat-datepicker-content {
+      .mat-calendar {
+        .mat-calendar-header {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bill-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bill-line {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .spacer {
+    width: 100%;
+  }
+
+  .context-menu {
+    transform: scale(.8);
+    height: 20px;
+    width: 20px;
+    padding: 0;
+  }
+}

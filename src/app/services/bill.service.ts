@@ -51,6 +51,26 @@ export class BillsService {
     );
   }
 
+  getBillById(id: string): Observable<Bill | null> {
+    return this.firestore
+      .collection<Bill>(this.billsCollection)
+      .doc(id)
+      .get()
+      .pipe(
+        map((doc) => {
+          if (doc.exists) {
+            return { id: doc.id, ...doc.data() } as Bill;
+          } else {
+            return null;
+          }
+        }),
+        catchError((error) => {
+          console.error('Error fetching bill:', error);
+          return of(null);
+        })
+      );
+  }
+
   addBill(bill: Bill): Promise<void> {
     const id = this.firestore.createId();
     return this.firestore.collection(this.billsCollection).doc(id).set({ ...bill, id });

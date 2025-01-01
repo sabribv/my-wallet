@@ -1,33 +1,45 @@
-<mat-sidenav-container class="sidenav-container">
-  <!-- Sidenav -->
-  <mat-sidenav #sidenav mode="over" [opened]="false">
-    <mat-nav-list>
-      <a mat-list-item *ngFor="let route of routes" [routerLink]="route.path" (click)="sidenav.close()">
-        <mat-icon>{{ route.icon }}</mat-icon>
-        <span>{{ route.label }}</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
+<!-- Toolbar -->
+<mat-toolbar color="primary">
+  <mat-toolbar>
+    <span>My Wallet</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+</mat-toolbar>
 
-  <!-- Main Content -->
-  <mat-sidenav-content class="sidenav-content">
-    <!-- Toolbar -->
-    <mat-toolbar color="primary">
-      <mat-toolbar>
-        <button mat-icon-button (click)="sidenav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <span>My Wallet</span>
-        <span class="spacer"></span>
-        <button mat-icon-button (click)="logout()">
-          <mat-icon>logout</mat-icon>
-        </button>
-      </mat-toolbar>
-    </mat-toolbar>
+<ng-container *ngIf="isHandset$ | async; else webTemplate">
+  <div class="mobile-container">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="mobile-menu">
+    <button mat-icon-button class="menu-item" *ngFor="let item of routes" [routerLink]="item.path" routerLinkActive="active">
+      <mat-icon>{{ item.icon }}</mat-icon>
+    </button>
+  </div>
+</ng-container>
 
-    <!-- Page Content -->
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<ng-template #webTemplate>
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidenav -->
+    <mat-sidenav mode="side" [opened]="true">
+      <mat-nav-list class="sidenav-panel">
+          <a mat-list-item class="menu-item" *ngFor="let route of routes" [routerLink]="route.path" routerLinkActive="active">
+            <div class="sidenav-item">
+              <mat-icon>{{ route.icon }}</mat-icon>
+              <span>{{ route.label }}</span>
+            </div>
+          </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content class="sidenav-content">
+      <!-- Page Content -->
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-template>

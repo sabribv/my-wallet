@@ -1,16 +1,41 @@
-mat-form-field {
-  width: 100%;
-  margin-bottom: 1rem;
-}
+:host {
+  .expenses-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
-mat-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding: 0.5rem 0;
-}
+  .spacer {
+    width: 100%;
+  }
 
-mat-checkbox {
-  margin: 0.5rem 0;
+  .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .expense-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .expense-line {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .context-menu {
+    transform: scale(.8);
+    height: 20px;
+    width: 20px;
+    padding: 0;
+  }
 }
