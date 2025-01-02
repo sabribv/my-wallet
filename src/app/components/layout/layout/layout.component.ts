@@ -4,7 +4,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
-import {CommonModule, NgFor} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {AuthService} from '@services/auth.service';
 import {LayoutService} from '@services/layout.service';
