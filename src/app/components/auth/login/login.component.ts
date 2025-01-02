@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {AuthService} from '../../../services/auth.service';
+import {AuthService} from '@services/auth.service';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -38,7 +38,7 @@ export class LoginComponent {
       try {
         await this.authService.login(email, password);
         void this.router.navigate(['/']);
-      } catch (error) {
+      } catch {
         this.snackBar.open('Las credenciales no son válidas.', 'Error', { duration: 3000 })
       }
     } else {

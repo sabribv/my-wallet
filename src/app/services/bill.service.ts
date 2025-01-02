@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {catchError, combineLatest, concatMap, forkJoin, from, map, Observable, of, switchMap, toArray} from 'rxjs';
+import {catchError, combineLatest, map, Observable, of, switchMap} from 'rxjs';
 import {Bill, BillWithExpense} from '@models/bill.model';
 import {AngularFirestore} from '@angular/fire/compat/firestore';
 import {Expense} from '@models/expense.model';
