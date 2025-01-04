@@ -1,27 +1,27 @@
-<mat-card class="login-card">
-  <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
-  </mat-card-header>
+<mat-toolbar color="primary">
+  <span>My Wallet</span>
+</mat-toolbar>
+ <div class="container" [class.mobile]="isMobile$ | async">
+   <h6>Ingresá tu email y contraseña para iniciar sesión</h6>
+   <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+     <mat-form-field>
+       <mat-label>Correo Electrónico</mat-label>
+       <input matInput formControlName="email" type="email" required />
+       <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Este campo es obligatorio</mat-error>
+       <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Por favor ingrese un correo electrónico válido</mat-error>
+     </mat-form-field>
 
-  <mat-card-content>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <mat-form-field appearance="fill">
-        <mat-label>Correo Electrónico</mat-label>
-        <input matInput formControlName="email" type="email" required />
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Este campo es obligatorio</mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Por favor ingrese un correo electrónico válido</mat-error>
-      </mat-form-field>
+     <mat-form-field>
+       <mat-label>Contraseña</mat-label>
+       <input matInput formControlName="password" type="password" required />
+       <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Este campo es obligatorio</mat-error>
+       <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres</mat-error>
+     </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Contraseña</mat-label>
-        <input matInput formControlName="password" type="password" required />
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Este campo es obligatorio</mat-error>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres</mat-error>
-      </mat-form-field>
+     <div class="login-actions">
+       <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>
+       <button mat-button color="primary">Crear cuenta</button>
+     </div>
+   </form>
+ </div>
 
-      <div class="login-actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>

@@ -1,4 +1,10 @@
-<div class="home-container">
+<div class="home-container" [class.mobile]="isMobile$ | async">
+  <div class="metrics" *ngIf="metrics$ | async as metrics">
+    <app-metric type="default" text="Deuda total" [counter]="metrics.total"></app-metric>
+    <app-metric type="warning" text="Próximo a vencer" [counter]="metrics.upcoming"></app-metric>
+    <app-metric type="error" text="Vencido" [counter]="metrics.overdue"></app-metric>
+  </div>
+
   <div *ngIf="overdueBills$ | async as overdueBills">
     <mat-card class="section" *ngIf="overdueBills.length > 0">
       <mat-card-header>

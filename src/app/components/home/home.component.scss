@@ -4,19 +4,32 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-  }
 
-  .bill-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+    .bill-title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
 
-  .bill-line {
-    margin-top: 8px;
-  }
+    .bill-line {
+      margin-top: 8px;
+    }
 
-  .spacer {
-    width: 100%;
+    .spacer {
+      width: 100%;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+    }
+
+    &.mobile {
+      .metrics {
+        display: flex;
+        flex-direction: column;
+      }
+    }
   }
 }

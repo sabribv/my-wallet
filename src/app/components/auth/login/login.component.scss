@@ -1,15 +1,45 @@
-.login-card {
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
+@use '@angular/material' as mat;
+
+:host {
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+
+    form {
+      border: 1px solid map-get(mat.$m2-gray-palette, 400);
+      border-radius: 4px;
+      padding: 20px;
+    }
+
+    .login-actions {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 20px;
+      gap: 16px;
+    }
+
+    &.mobile {
+      max-width: 400px;
+      flex-direction: column;
+
+      form {
+        border: unset;
+        padding: 0;
+      }
+
+      .login-actions {
+        flex-direction: column;
+      }
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
 }
 
-mat-form-field {
-  width: 100%;
-}
 
-.login-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import {BehaviorSubject, combineLatest, map, Observable, shareReplay, switchMap} from 'rxjs';
 import {Bill, BillWithExpense} from '@models/bill.model';
 import { BillsService } from '@services/bill.service';
@@ -18,6 +17,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {RouterModule} from '@angular/router';
+import {MetricComponent} from '@components/misc/metric/metric.component';
+import {LayoutService} from '@services/layout.service';
 
 const MY_FORMATS = {
   parse: {
@@ -45,6 +46,7 @@ const MY_FORMATS = {
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
+    MetricComponent,
     StatusIndicatorComponent,
     RouterModule,
   ],
@@ -58,8 +60,18 @@ export class BillsComponent {
   debitBills$: Observable<BillWithExpense[]>;
   selectedDate: moment.Moment | null = moment();
   selectedDate$: BehaviorSubject<moment.Moment> = new BehaviorSubject<moment.Moment>(moment());
+  metrics$: Observable<{
+    total: number,
+    cash: number,
+    debit: number,
+  }>;
+  isMobile$: Observable<boolean>;
 
-  constructor(private dialog: MatDialog, private billsService: BillsService, private expensesService: ExpenseService) {
+  constructor(private layoutService: LayoutService,
+              private billsService: BillsService,
+              private expensesService: ExpenseService) {
+    this.isMobile$ = this.layoutService.isHandset$;
+
     const bills$ = combineLatest([
       this.selectedDate$.pipe(
         switchMap(date => {
@@ -95,6 +107,16 @@ export class BillsComponent {
       map((bills) =>
         bills.filter(bill => (bill.expense?.paymentType === 'debit')))
     );
+
+    this.metrics$ = combineLatest([bills$, this.cashBills$, this.debitBills$]).pipe(
+      map(([bills, cash, debit]) => {
+        return {
+          total: bills.reduce((acc, current) => acc + current.amount, 0),
+          cash: cash.reduce((acc, current) => acc + current.amount, 0),
+          debit: debit.reduce((acc, current) => acc + current.amount, 0),
+        }
+      })
+    )
   }
 
   selectMonthAndYear(normalizedMonth: moment.Moment, datepicker: MatDatepicker<moment.Moment>): void {
