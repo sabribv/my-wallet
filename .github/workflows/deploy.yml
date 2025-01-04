@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main # Cambia 'main' por el nombre de tu rama principal si es necesario
+  workflow_dispatch:
+
+permissions:
+  contents: write  # Da permisos para realizar un push
 
 jobs:
   build-and-deploy:
