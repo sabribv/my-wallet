@@ -81,7 +81,7 @@ export class BillsComponent {
                 bill.dueDate >= date.startOf('month').valueOf() &&
                 bill.dueDate <= date.endOf('month').valueOf());
 
-              return filteredBills.sort((a, b) => b.dueDate - a.dueDate)
+              return filteredBills.sort((a, b) =>  a.dueDate - b.dueDate)
             }),
           )
         })

@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+
+:host {
+  .install-panel  {
+    border: 1px solid map-get(mat.$m2-blue-palette, 500);
+    padding: 16px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: #fff;
+
+    .install-panel-content {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      align-items: center;
+    }
+
+    &.mobile {
+      .install-panel-content {
+        flex-direction: column;
+      }
+    }
+  }
+
+  .spacer {
+    width: 100%;
+  }
+}

@@ -1,1 +1,17 @@
+<div *ngIf="!isPwaInstalled && showInstallButton" class="install-panel" [class.mobile]="isMobile$ | async">
+  <div class="install-panel-content">
+    <span>Instalá la applicación</span>
+    <button mat-flat-button color="primary" (click)="installPwa()">Instalar aplicación</button>
+  </div>
+  <span class="spacer"></span>
+  <button mat-icon-button color="primary" (click)="closeInstallPanel()"><mat-icon>close</mat-icon></button>
+</div>
+<div *ngIf="updateAvailable && showInstallButton" class="install-panel" [class.mobile]="isMobile$ | async">
+  <div class="install-panel-content">
+    <span>Hay una nueva versión disponible.</span>
+    <button mat-flat-button color="primary" (click)="reloadApp()">Actualizar aplicación</button>
+  </div>
+  <span class="spacer"></span>
+  <button mat-icon-button color="primary" (click)="closeInstallPanel()"><mat-icon>close</mat-icon></button>
+</div>
 <router-outlet></router-outlet>
