@@ -29,4 +29,14 @@ export class AuthService {
   getAuthState() {
     return this.afAuth.authState;
   }
+
+  getCurrentUser() {
+    return this.afAuth.currentUser
+      .then((user) => {
+        if (!user) {
+          throw new Error('No user is logged in');
+        }
+        return user;
+      });
+  }
 }
