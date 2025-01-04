@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Cambia 'main' por el nombre de tu rama principal si es necesario
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Cambia la versión según lo que use tu app
+          cache: 'npm'
+
+      # 3. Instalar dependencias
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Crear archivo de configuración dinámico (firebase-config.ts)
+      - name: Generate firebase-config.ts
+        run: |
+          echo "export const firebaseConfig = {
+            apiKey: '${{ secrets.FIREBASE_API_KEY }}',
+            authDomain: '${{ secrets.FIREBASE_AUTH_DOMAIN }}',
+            projectId: '${{ secrets.FIREBASE_PROJECT_ID }}',
+            storageBucket: '${{ secrets.FIREBASE_STORAGE_BUCKET }}',
+            messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}',
+            appId: '${{ secrets.FIREBASE_APP_ID }}',
+            measurementId: '${{ secrets.FIREBASE_MEASUREMENT_ID }}',
+          };" > src/firebase-config.ts
+
+      # 5. Construir el proyecto
+      - name: Build project
+        run: npm run build # Asegúrate de que este script exista en tu package.json
+
+      # 6. Desplegar en GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Cambia esto si tu build genera otro directorio
