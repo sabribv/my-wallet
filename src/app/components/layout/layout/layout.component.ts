@@ -30,8 +30,8 @@ export class LayoutComponent {
   isHandset$ = this.layoutService.isHandset$;
   routes = [
     { path: '/home', label: 'Home', icon: 'home' },
-    { path: '/bills', label: 'Gastos mensuales', icon: 'payments' },
-    { path: '/expenses', label: 'Gastos', icon: 'settings' },
+    { path: '/bills', label: 'Cuentas por Pagar', icon: 'credit_card' },
+    { path: '/expenses', label: 'Categorías de Gastos', icon: 'settings' },
   ];
 
   constructor(private authService: AuthService) { }

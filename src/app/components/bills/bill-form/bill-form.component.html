@@ -1,5 +1,9 @@
-<h2>{{ isEdit ? 'Editar Gasto' : 'Nuevo Gasto' }}</h2>
 <mat-card class="form-container">
+  <mat-card-header>
+    <mat-card-title>
+      <h5>{{ isEdit ? 'Editar cuenta por pagar' : 'Crear cuenta por pagar' }}</h5>
+    </mat-card-title>
+  </mat-card-header>
   <mat-card-content>
     <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
