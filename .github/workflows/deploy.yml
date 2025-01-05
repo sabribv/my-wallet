@@ -47,11 +47,6 @@ jobs:
       - name: Build project
         run: npm run build:github
 
-      # 7. Mover el archivo firebase-messaging-sw.js al directorio de build
-      - name: Move firebase-messaging-sw.js to dist
-        run: |
-          cp src/firebase-messaging-sw.js dist/my-wallet/browser/firebase-messaging-sw.js
-
       # 8. Guardar los archivos del build en una carpeta temporal
       - name: Save build artifacts
         run: mv dist/my-wallet/browser ../build-output
