@@ -50,8 +50,8 @@ jobs:
       # 6. Crear archivo de configuración dinámico para el Service Worker (firebase-messaging-sw.js)
       - name: Generate firebase-messaging-sw.js
         run: |
-          echo "importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js');
-          importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js');
+          echo "importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js');
+          importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js');
 
           const firebaseConfig = {
             apiKey: '${{ secrets.FIREBASE_API_KEY }}',
