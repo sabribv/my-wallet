@@ -57,9 +57,7 @@ jobs:
 
       # 6. Desplegar en GitHub Pages
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/my-wallet/browser
-          user_name: 'github-actions'
-          user_email: 'github-actions@users.noreply.github.com'
+          publish_dir: dist/my-wallet/browser
