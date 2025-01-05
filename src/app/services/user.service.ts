@@ -10,8 +10,9 @@ export class UserService {
 
   async updateToken(userId: string, token: string) {
     const userRef = this.firestore.collection(this.userCollection).doc(userId);
-    await userRef.update({
-      pushToken: token,
-    });
+    await userRef.set(
+      { pushToken: token },
+      { merge: true }
+    );
   }
 }

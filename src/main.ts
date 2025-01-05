@@ -7,7 +7,7 @@ import { firebaseConfig } from 'src/app/firebase-config';
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register('/my-wallet/ngsw-worker.js')
+    .register('/ngsw-worker.js')
     .then((registration) => {
       console.log('Service Worker registrado con éxito:', registration);
     })
@@ -16,7 +16,7 @@ if ('serviceWorker' in navigator) {
     });
 
   navigator.serviceWorker
-    .register('/my-wallet/firebase-messaging-sw.js')
+    .register('/firebase-messaging-sw.js')
     .then((registration) => {
       console.log('Firebase Messaging Service Worker registrado con éxito:', registration);
     })

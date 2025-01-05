@@ -84,11 +84,11 @@ jobs:
           };
 
             self.registration.showNotification(notificationTitle, notificationOptions);
-          });" > dist/my-wallet/browser/firebase-messaging-sw.js
+          });" > dist/firebase-messaging-sw.js
 
       # 8. Guardar los archivos del build en una carpeta temporal
       - name: Save build artifacts
-        run: mv dist/my-wallet/browser ../build-output
+        run: mv dist ../build-output
 
       # 9. Configurar git para hacer el push manualmente
       - name: Configure Git
