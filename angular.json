@@ -18,7 +18,6 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/my-wallet",
-            "baseHref": "/my-wallet/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [

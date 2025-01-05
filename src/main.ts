@@ -4,7 +4,7 @@ import { AppComponent } from './app/app.component';
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register('/ngsw-worker.js')
+    .register('/my-wallet/ngsw-worker.js')
     .then((registration) => {
       console.log('Service Worker registrado con éxito:', registration);
     })
@@ -13,7 +13,7 @@ if ('serviceWorker' in navigator) {
     });
 
   navigator.serviceWorker
-    .register('/firebase-messaging-sw.js')
+    .register('/my-wallet/firebase-messaging-sw.js')
     .then((registration) => {
       console.log('Firebase Messaging Service Worker registrado con éxito:', registration);
     })
