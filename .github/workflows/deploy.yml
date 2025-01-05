@@ -40,38 +40,44 @@ jobs:
             messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}',
             appId: '${{ secrets.FIREBASE_APP_ID }}',
             measurementId: '${{ secrets.FIREBASE_MEASUREMENT_ID }}',
+            vapidKey: '${{ secrets.FIREBASE_VAPID_KEY}}',
           };" > src/app/firebase-config.ts
 
-      # 5. Construir el proyecto
+      # 6. Construir el proyecto
       - name: Build project
         run: npm run build:github
 
-      # 6. Guardar los archivos del build en una carpeta temporal
+      # 7. Mover el archivo firebase-messaging-sw.js al directorio de build
+      - name: Move firebase-messaging-sw.js to dist
+        run: |
+          cp src/firebase-messaging-sw.js dist/my-wallet/browser/firebase-messaging-sw.js
+
+      # 8. Guardar los archivos del build en una carpeta temporal
       - name: Save build artifacts
         run: mv dist/my-wallet/browser ../build-output
 
-      # 7. Configurar git para hacer el push manualmente
+      # 9. Configurar git para hacer el push manualmente
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      # 8. Crear y cambiar a la rama gh-pages
+      # 10. Crear y cambiar a la rama gh-pages
       - name: Switch to gh-pages branch
         run: |
           git checkout --orphan gh-pages
           git reset --hard
           git clean -fdx
 
-      # 9. Mover los archivos del build de vuelta al directorio actual
+      # 11. Mover los archivos del build de vuelta al directorio actual
       - name: Restore build artifacts
         run: mv ../build-output/* .
 
-      # 10. Crear el archivo .nojekyll
+      # 12. Crear el archivo .nojekyll
       - name: Create .nojekyll file
         run: touch .nojekyll
 
-      # 11. Commit y push de los archivos
+      # 13. Commit y push de los archivos
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

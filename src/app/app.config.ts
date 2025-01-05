@@ -11,6 +11,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideServiceWorker } from '@angular/service-worker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { MatFormFieldDefaultOptions, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import {provideMessaging, getMessaging} from '@angular/fire/messaging';
 
 const appearance: MatFormFieldDefaultOptions = {
   appearance: 'outline'
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    provideMessaging(() => getMessaging()),
     { provide: FIREBASE_OPTIONS, useValue: firebaseConfig },
     provideAnimationsAsync(),
     provideServiceWorker('ngsw-worker.js', {
