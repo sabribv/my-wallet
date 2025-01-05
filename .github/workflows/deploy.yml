@@ -50,10 +50,10 @@ jobs:
       # 6. Crear archivo de configuración dinámico para el Service Worker (firebase-messaging-sw.js)
       - name: Generate firebase-messaging-sw.js
         run: |
-          echo "importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js');
-          importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js');
+          echo "importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js');
+            importScripts('https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js');
 
-          const firebaseConfig = {
+            const firebaseConfig = {
             apiKey: '${{ secrets.FIREBASE_API_KEY }}',
             authDomain: '${{ secrets.FIREBASE_AUTH_DOMAIN }}',
             projectId: '${{ secrets.FIREBASE_PROJECT_ID }}',
@@ -64,21 +64,27 @@ jobs:
             vapidKey: '${{ secrets.FIREBASE_VAPID_KEY}}',
           };
 
-          firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
 
-          const messaging = firebase.messaging();
+            messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+          });
 
-          messaging.onBackgroundMessage(function (payload) {
-            console.log('Received background message ', payload);
-            const notificationTitle = 'Push Notification';
+            messaging.onBackgroundMessage((payload) => {
+            console.log(
+            '[firebase-messaging-sw.js] Received background message ',
+            payload
+            );
+            // Customize notification here
+            const notificationTitle = 'Background Message Title';
             const notificationOptions = {
-              body: payload.notification.body,
-              icon: '/assets/icons/icon-192x192.png'
-            };
+          body: 'Background Message body.',
+          icon: '/firebase-logo.png'
+          };
 
             self.registration.showNotification(notificationTitle, notificationOptions);
-          });
-          " > dist/my-wallet/browser/firebase-messaging-sw.js
+          });" > dist/my-wallet/browser/firebase-messaging-sw.js
 
       # 8. Guardar los archivos del build en una carpeta temporal
       - name: Save build artifacts
