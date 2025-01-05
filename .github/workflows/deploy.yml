@@ -44,7 +44,7 @@ jobs:
 
       # 5. Construir el proyecto
       - name: Build project
-        run: npm run build
+        run: npm run build --base-href /my-wallet/
 
       # 6. Guardar los archivos del build en una carpeta temporal
       - name: Save build artifacts
