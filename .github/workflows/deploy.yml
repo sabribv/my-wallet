@@ -49,6 +49,12 @@ jobs:
       - name: List files in dist/my-wallet/browser
         run: ls -l dist/my-wallet/browser
 
+      - name: Upload build output as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/my-wallet/browser
+
       # 6. Desplegar en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
