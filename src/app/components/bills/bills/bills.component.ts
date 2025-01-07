@@ -55,7 +55,7 @@ const MY_FORMATS = {
   styleUrls: ['./bills.component.scss'],
 })
 export class BillsComponent {
-  today = moment().endOf('day').valueOf();
+  today = moment().startOf('day').valueOf();
   cashBills$: Observable<BillWithExpense[]>;
   debitBills$: Observable<BillWithExpense[]>;
   selectedDate: moment.Moment | null = moment();

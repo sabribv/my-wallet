@@ -72,7 +72,7 @@
                 <app-status-indicator text="Pagado"></app-status-indicator>
               </ng-container>
               <ng-template #pendingTemplate>
-                <ng-container *ngIf="bill.dueDate > today; else overdueTemplate">
+                <ng-container *ngIf="bill.dueDate >= today; else overdueTemplate">
                   <app-status-indicator text="Pendiente" type="warning"></app-status-indicator>
                 </ng-container>
                 <ng-template #overdueTemplate>
