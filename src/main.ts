@@ -26,9 +26,7 @@ if ('serviceWorker' in navigator) {
 }
 
 const firebaseApp = initializeApp(firebaseConfig);
-console.log('Firebase inicializado:', firebaseApp);
 
-// Opcional: Configura Firebase Messaging
 const messaging = getMessaging(firebaseApp);
 onMessage(messaging, (payload) => {
   console.log('Mensaje recibido en primer plano:', payload);

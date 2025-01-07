@@ -22,7 +22,6 @@ export class UserService {
         device: navigator.userAgent,
         updatedAt: new Date(),
       });
-      console.log('Token guardado en subcolección');
     } catch (error) {
       console.error('Error al guardar el token:', error);
     }

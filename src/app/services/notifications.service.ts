@@ -19,11 +19,8 @@ export class NotificationsService {
         const token = await getToken(messaging, {
           vapidKey: firebaseConfig.vapidKey,
         });
-        console.log('Token de notificación:', token);
 
         await this.userService.updateToken(userId, token);
-      } else {
-        console.log('Permiso de notificación denegado');
       }
     });
   }
