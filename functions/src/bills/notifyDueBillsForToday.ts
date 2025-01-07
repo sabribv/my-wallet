@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import moment from "moment";
-import {getUsers, getUserCollection} from "../shared/firestoreUtils";
+import {getUsers, getUserCollection, removeInvalidTokenFromDatabase} from "../shared/firestoreUtils";
 
 // Función HTTPS para notificar los vencimientos del dia
 const notifyDueBills = async () => {
@@ -75,6 +75,13 @@ const notifyDueBills = async () => {
                 `Error al enviar al token ${tokens[idx]}:`,
                 resp.error?.message
               );
+
+              // Manejo de errores comunes
+              if (resp.error?.code === "messaging/registration-token-not-registered" ||
+                resp.error?.code === "messaging/invalid-registration-token") {
+                  console.warn(`El token ${message.tokens[idx]} ya no es válido. Eliminando...`);
+                  removeInvalidTokenFromDatabase(userId, message.tokens[idx]);
+              }
             }
           });
         } catch (error) {
