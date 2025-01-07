@@ -3,14 +3,12 @@ import {AngularFirestore} from '@angular/fire/compat/firestore';
 import {Expense} from '@models/expense.model';
 import {catchError, map, Observable, of, switchMap} from 'rxjs';
 import {AuthService} from '@services/auth.service';
+import {collection} from '../constants/collections';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExpenseService {
-  private userCollection = 'users';
-  private expenseCollection = 'expenses';
-
   constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
   async addExpense(expense: Expense): Promise<void> {
@@ -18,7 +16,7 @@ export class ExpenseService {
     const id = this.firestore.createId();
 
     return this.firestore
-      .collection(`${this.userCollection}/${user.uid}/${this.expenseCollection}`)
+      .collection(`${collection.users}/${user.uid}/${collection.expenses}`)
       .doc(id)
       .set({ ...expense, id });
   }
@@ -28,7 +26,7 @@ export class ExpenseService {
       switchMap((auth) => {
         if (auth) {
           return this.firestore
-            .collection<Expense>(`${this.userCollection}/${auth.uid}/${this.expenseCollection}`)
+            .collection<Expense>(`${collection.users}/${auth.uid}/${collection.expenses}`)
             .valueChanges({idField: 'id'});
         } else {
           return of([]);
@@ -42,7 +40,7 @@ export class ExpenseService {
       switchMap((auth) => {
         if (auth) {
           return this.firestore
-            .collection<Expense>(`${this.userCollection}/${auth.uid}/${this.expenseCollection}`)
+            .collection<Expense>(`${collection.users}/${auth.uid}/${collection.expenses}`)
             .doc(id)
             .get()
             .pipe(
@@ -69,7 +67,7 @@ export class ExpenseService {
     const user = await this.authService.getCurrentUser();
 
     return this.firestore
-      .collection(`${this.userCollection}/${user.uid}/${this.expenseCollection}`)
+      .collection(`${collection.users}/${user.uid}/${collection.expenses}`)
       .doc(id)
       .update(expense);
   }
@@ -78,7 +76,7 @@ export class ExpenseService {
     const user = await this.authService.getCurrentUser();
 
     return this.firestore
-      .collection(`${this.userCollection}/${user.uid}/${this.expenseCollection}`)
+      .collection(`${collection.users}/${user.uid}/${collection.expenses}`)
       .doc(id)
       .delete();
   }

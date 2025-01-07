@@ -31,6 +31,10 @@
     <app-metric text="Débito" [counter]="metrics.debit"></app-metric>
   </div>
 
+  <ng-container *ngIf="expensesWithNoBills$ | async as expenses">
+    <app-info-panel type="warning">No se cargaron los siguientes gatos fijos: {{expenses}}.</app-info-panel>
+  </ng-container>
+
   <ng-container *ngIf="cashBills$ | async as cashBills">
     <ng-template
       [ngTemplateOutlet]="billsTemplate"

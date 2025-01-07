@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+
+:host {
+  .container {
+    padding: 16px;
+    border: 1px solid map-get(mat.$m2-gray-palette, 800);
+    color: map-get(mat.$m2-gray-palette, 800);
+
+    &.warning {
+      border: 1px solid map-get(mat.$m2-yellow-palette, 800);
+      color: map-get(mat.$m2-yellow-palette, 800);
+      background-color: map-get(mat.$m2-yellow-palette, 50);
+    }
+
+    &.error {
+      border: 1px solid map-get(mat.$m2-red-palette, 800);
+      color: map-get(mat.$m2-red-palette, 800);
+    }
+
+    &.default {
+      border: 1px solid map-get(mat.$m2-blue-palette, 800);
+      color: map-get(mat.$m2-blue-palette, 800);
+    }
+  }
+}

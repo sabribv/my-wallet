@@ -4,15 +4,18 @@ import { MatListModule } from '@angular/material/list';
 import { BillsService } from '@services/bill.service';
 import moment from 'moment';
 import { BillWithExpense } from '@models/bill.model';
-import {combineLatest, map, Observable, shareReplay} from 'rxjs';
+import {combineLatest, map, Observable, shareReplay, switchMap} from 'rxjs';
 import {MatCardModule} from '@angular/material/card';
 import {MetricComponent} from '@components/misc/metric/metric.component';
 import {LayoutService} from '@services/layout.service';
+import {InfoPanelComponent} from '@components/misc/info-panel/info-panel.component';
+import {Expense} from '@models/expense.model';
+import {yearsPerPage} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatCardModule, MetricComponent],
+  imports: [CommonModule, MatListModule, MatCardModule, MetricComponent, InfoPanelComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -26,6 +29,7 @@ export class HomeComponent {
     upcoming: number,
   }>;
   isMobile$: Observable<boolean>;
+  expensesWithNoBills$: Observable<string | undefined>;
 
   constructor(private billsService: BillsService, private layoutService: LayoutService) {
     this.isMobile$ = this.layoutService.isHandset$;
@@ -61,6 +65,11 @@ export class HomeComponent {
           upcoming,
         }
       })
-    )
+    );
+
+    const today = moment();
+    this.expensesWithNoBills$ = this.billsService.getExpensesWithNoBills(today.month(), today.year()).pipe(
+      map((expenses: Expense[] | null) => expenses?.map((expense: Expense) => expense.name).join(', ')),
+    );
   }
 }

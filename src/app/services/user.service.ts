@@ -1,19 +1,17 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/compat/firestore';
 import {AuthService} from '@services/auth.service';
+import {collection} from '../constants/collections';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private userCollection = 'users';
-  private tokensCollection = 'tokens';
-
   constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
   async updateToken(userId: string, token: string) {
     const tokenRef = this.firestore
-      .collection(this.userCollection)
+      .collection(collection.users)
       .doc(userId)
-      .collection(this.tokensCollection)
+      .collection(collection.tokens)
       .doc(token);
 
     try {

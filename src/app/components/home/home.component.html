@@ -5,6 +5,12 @@
     <app-metric type="error" text="Vencido" [counter]="metrics.overdue"></app-metric>
   </div>
 
+  <ng-container *ngIf="expensesWithNoBills$ | async as expenses">
+    <app-info-panel type="warning">
+      Aún no se cargaron los siguientes gatos fijos para el mes en curso: {{expenses}}.
+    </app-info-panel>
+  </ng-container>
+
   <div *ngIf="overdueBills$ | async as overdueBills">
     <mat-card class="section" *ngIf="overdueBills.length > 0">
       <mat-card-header>

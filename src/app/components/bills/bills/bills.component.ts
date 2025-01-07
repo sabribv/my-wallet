@@ -19,6 +19,8 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import {RouterModule} from '@angular/router';
 import {MetricComponent} from '@components/misc/metric/metric.component';
 import {LayoutService} from '@services/layout.service';
+import {Expense} from '@models/expense.model';
+import {InfoPanelComponent} from '@components/misc/info-panel/info-panel.component';
 
 const MY_FORMATS = {
   parse: {
@@ -49,6 +51,7 @@ const MY_FORMATS = {
     MetricComponent,
     StatusIndicatorComponent,
     RouterModule,
+    InfoPanelComponent,
   ],
   providers: [provideMomentDateAdapter(MY_FORMATS),],
   templateUrl: './bills.component.html',
@@ -58,6 +61,7 @@ export class BillsComponent {
   today = moment().startOf('day').valueOf();
   cashBills$: Observable<BillWithExpense[]>;
   debitBills$: Observable<BillWithExpense[]>;
+  expensesWithNoBills$: Observable<string | undefined>;
   selectedDate: moment.Moment | null = moment();
   selectedDate$: BehaviorSubject<moment.Moment> = new BehaviorSubject<moment.Moment>(moment());
   metrics$: Observable<{
@@ -117,6 +121,11 @@ export class BillsComponent {
         }
       })
     )
+
+    this.expensesWithNoBills$ = this.selectedDate$.pipe(
+      switchMap((date) => this.billsService.getExpensesWithNoBills(date.month(), date.year())),
+      map((expenses: Expense[] | null) => expenses?.map((expense: Expense) => expense.name).join(', ')),
+    );
   }
 
   selectMonthAndYear(normalizedMonth: moment.Moment, datepicker: MatDatepicker<moment.Moment>): void {
