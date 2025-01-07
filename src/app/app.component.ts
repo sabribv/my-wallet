@@ -28,8 +28,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isPwaInstalled = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true;
+    console.log('is pwa installed', this.isPwaInstalled);
 
     window.addEventListener('beforeinstallprompt', (event: Event) => {
+      console.log('before install prompt', event);
       event.preventDefault();
       this.deferredPrompt = event;
       this.showInstallButton = true;
@@ -39,6 +41,7 @@ export class AppComponent implements OnInit {
       this.swUpdate.versionUpdates
         .pipe(filter((event): event is VersionReadyEvent => event.type === 'VERSION_READY'))
         .subscribe(() => {
+          console.log('update available');
           this.updateAvailable = true;
           this.showInstallButton = true;
         });

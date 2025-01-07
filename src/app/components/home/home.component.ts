@@ -53,7 +53,7 @@ export class HomeComponent {
         const upcoming = upcomingBills.reduce((acc, current) => acc + current.amount, 0);
 
         return {
-          total: overdue + upcoming + upcoming,
+          total: overdue + upcoming,
           overdue,
           upcoming,
         }
