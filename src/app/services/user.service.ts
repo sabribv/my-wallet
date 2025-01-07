@@ -5,14 +5,26 @@ import {AuthService} from '@services/auth.service';
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private userCollection = 'users';
+  private tokensCollection = 'tokens';
 
   constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
   async updateToken(userId: string, token: string) {
-    const userRef = this.firestore.collection(this.userCollection).doc(userId);
-    await userRef.set(
-      { pushToken: token },
-      { merge: true }
-    );
+    const tokenRef = this.firestore
+      .collection(this.userCollection)
+      .doc(userId)
+      .collection(this.tokensCollection)
+      .doc(token);
+
+    try {
+      await tokenRef.set({
+        token,
+        device: navigator.userAgent,
+        updatedAt: new Date(),
+      });
+      console.log('Token guardado en subcolección');
+    } catch (error) {
+      console.error('Error al guardar el token:', error);
+    }
   }
 }
