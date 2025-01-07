@@ -4,7 +4,7 @@ import { ExpenseService } from '@services/expense.service';
 import {CommonModule} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {Expense} from '@models/expense.model';
 import {MatListModule} from '@angular/material/list';
 import {RouterLink} from '@angular/router';
@@ -32,7 +32,9 @@ export class ExpensesComponent {
   expenses$: Observable<Expense[]>;
 
   constructor(private dialog: MatDialog, private expenseService: ExpenseService) {
-    this.expenses$ = this.expenseService.getAllExpenses();
+    this.expenses$ = this.expenseService.getAllExpenses().pipe(
+      map(expenses => expenses.sort((a,b) => a.name.localeCompare(b.name)))
+    );
   }
 
   deleteExpense(id: string | undefined): void {

@@ -31,7 +31,10 @@ export class HomeComponent {
     this.isMobile$ = this.layoutService.isHandset$;
 
     const bills$ = this.billsService.getBillsWithExpenses().pipe(
-      map(bills => bills.filter((bill) => !bill.isPaid)),
+      map(bills => bills
+        .filter((bill) => !bill.isPaid)
+        .sort((a, b) => a.dueDate - b.dueDate)
+      ),
       shareReplay(1)
     );
 
