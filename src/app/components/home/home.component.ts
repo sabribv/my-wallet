@@ -17,7 +17,7 @@ import {LayoutService} from '@services/layout.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  today: moment.Moment = moment();
+  today: moment.Moment = moment().startOf('day');
   overdueBills$: Observable<BillWithExpense[]>;
   upcomingBills$: Observable<BillWithExpense[]>;
   metrics$: Observable<{
@@ -40,7 +40,7 @@ export class HomeComponent {
 
     this.overdueBills$ = bills$.pipe(
       map(bills => bills.filter((bill) =>
-        moment(bill.dueDate).isBefore(this.today, 'day')
+        moment(bill.dueDate).isBefore(this.today)
       ))
     );
 
