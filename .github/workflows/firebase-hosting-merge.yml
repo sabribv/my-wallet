@@ -79,7 +79,7 @@ jobs:
 
       # 7. Deploy a Firebase Hosting
       - name: Deploy to Firebase Hosting
-        uses: firebase/actions/hosting-deploy@v0
+        uses: firebasehosting/github-action@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WALLET_4C02F }}'
