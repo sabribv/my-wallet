@@ -1,6 +1,6 @@
 {
   "name": "My wallet",
-  "short_name": "MyWallet",
+  "short_name": "My Wallet",
   "description": "Administracion de mis finanzas personales",
   "start_url": "/",
   "display": "standalone",
