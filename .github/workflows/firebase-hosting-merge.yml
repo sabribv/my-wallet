@@ -49,7 +49,7 @@ jobs:
       # 6. Crear archivo de configuración dinámico para el Service Worker (firebase-messaging-sw.js)
       - name: Generate firebase-messaging-sw.js
         run: |
-          cp firebase-messaging-sw.base.js dist/firebase-messaging-sw.js
+          cp src/firebase-messaging-sw.base.js dist/firebase-messaging-sw.js
           sed -i 's|__FIREBASE_API_KEY__|${{ secrets.FIREBASE_API_KEY }}|g' dist/firebase-messaging-sw.js
           sed -i 's|__FIREBASE_AUTH_DOMAIN__|${{ secrets.FIREBASE_AUTH_DOMAIN }}|g' dist/firebase-messaging-sw.js
           sed -i 's|__FIREBASE_PROJECT_ID__|${{ secrets.FIREBASE_PROJECT_ID }}|g' dist/firebase-messaging-sw.js
