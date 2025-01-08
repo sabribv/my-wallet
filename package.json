@@ -5,7 +5,7 @@
     "ng": "ng",
     "generate-sw": "node scripts/generate-sw.js",
     "start": "npm run generate-sw && ng serve",
-    "build": "ng build",
+    "build": "ng build && npm run generate-sw && cp src/firebase-messaging-sw.js dist/",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
