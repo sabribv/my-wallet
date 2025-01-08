@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "generate-sw": "node scripts/generate-sw.js",
+    "start": "npm run generate-sw && ng serve",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
@@ -26,6 +27,7 @@
     "@angular/pwa": "^18.2.12",
     "@angular/router": "^18.0.0",
     "@angular/service-worker": "^18.0.0",
+    "dotenv": "^16.4.7",
     "firebase": "^11.1.0",
     "firebase-admin": "^13.0.2",
     "moment": "^2.30.1",

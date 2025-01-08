@@ -44,3 +44,4 @@ Thumbs.db
 # Sensitive data
 /src/app/firebase-config.ts
 /src/firebase-messaging-sw.js
+.env
