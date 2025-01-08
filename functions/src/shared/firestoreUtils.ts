@@ -10,20 +10,21 @@ export const getUserCollection = (userId: string, collectionName: string) => {
   return db.collection(`users/${userId}/${collectionName}`).get();
 };
 
-export const removeInvalidTokenFromDatabase = async (userId: string, token: string) => {
-  try {
-    // Referencia al documento en la colección tokens
-    const tokenRef = admin.firestore()
-      .collection("users")
-      .doc(userId)
-      .collection("tokens")
-      .doc(token);
+export const removeInvalidTokenFromDatabase =
+  async (userId: string, token: string) => {
+    try {
+      // Referencia al documento en la colección tokens
+      const tokenRef = admin.firestore()
+        .collection("users")
+        .doc(userId)
+        .collection("tokens")
+        .doc(token);
 
-    // Eliminar el documento del token
-    await tokenRef.delete();
+      // Eliminar el documento del token
+      await tokenRef.delete();
 
-    console.log(`Token eliminado exitosamente: ${token}`);
-  } catch (error) {
-    console.error(`Error al intentar eliminar el token ${token}:`, error);
-  }
-}
+      console.log(`Token eliminado exitosamente: ${token}`);
+    } catch (error) {
+      console.error(`Error al intentar eliminar el token ${token}:`, error);
+    }
+  };
