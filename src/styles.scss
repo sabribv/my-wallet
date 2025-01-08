@@ -18,13 +18,37 @@ $my-theme: mat.m2-define-light-theme((
 @include mat.core-theme($my-theme);
 @include mat.all-component-themes($my-theme);
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 html, body {
   height: 100%;
   margin: 0;
+  padding: 0;
   font-family: Roboto, Arial, sans-serif;
 }
 
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+#splash-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation: fadeIn 1s ease-in-out;
+  height: 100vh;
+}
+
+#splash-screen img {
+  width: 150px;
+  height: 150px;
+}
 
 .mat-sidenav-container {
   height: 100%;
