@@ -21,6 +21,7 @@ import {MetricComponent} from '@components/misc/metric/metric.component';
 import {LayoutService} from '@services/layout.service';
 import {Expense} from '@models/expense.model';
 import {InfoPanelComponent} from '@components/misc/info-panel/info-panel.component';
+import {MatProgressBar} from '@angular/material/progress-bar';
 
 const MY_FORMATS = {
   parse: {
@@ -52,6 +53,7 @@ const MY_FORMATS = {
     StatusIndicatorComponent,
     RouterModule,
     InfoPanelComponent,
+    MatProgressBar,
   ],
   providers: [provideMomentDateAdapter(MY_FORMATS),],
   templateUrl: './bills.component.html',
@@ -132,13 +134,5 @@ export class BillsComponent {
     this.selectedDate = normalizedMonth.clone(); // Guardamos el mes y año seleccionados
     datepicker.close(); // Cerramos el selector
     this.selectedDate$.next(this.selectedDate);
-  }
-
-  deleteBill(id: string | undefined): void {
-    if (!id) {
-      console.warn('El ID del bill no es válido');
-      return;
-    }
-    this.billsService.deleteBill(id);
   }
 }

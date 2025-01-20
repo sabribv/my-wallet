@@ -5,11 +5,11 @@
     padding: 16px;
     border: 1px solid map-get(mat.$m2-gray-palette, 800);
     color: map-get(mat.$m2-gray-palette, 800);
+    background-color: #fff;
 
     &.warning {
       border: 1px solid map-get(mat.$m2-yellow-palette, 800);
       color: map-get(mat.$m2-yellow-palette, 800);
-      background-color: map-get(mat.$m2-yellow-palette, 50);
     }
 
     &.error {

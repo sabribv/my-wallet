@@ -3,4 +3,6 @@ export enum collection {
   tokens = 'tokens',
   expenses = 'expenses',
   bills = 'bills',
+  wallets = 'wallets',
+  walletTransactions = 'transactions',
 }

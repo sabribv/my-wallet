@@ -1,43 +1,47 @@
-<!-- Toolbar -->
-<mat-toolbar color="primary">
-    <span>My Wallet</span>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-</mat-toolbar>
-
-<ng-container *ngIf="isHandset$ | async; else webTemplate">
-  <div class="mobile-container">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav [mode]="sidenavMode$ | async" [opened]="sidenavOpen$ | async" [position]="sidenavPosition$ | async" class="sidenav" #sidenav>
+    <mat-toolbar class="toolbar toolbar-left">
+      <span>My wallet</span>
+    </mat-toolbar>
+    <mat-nav-list class="sidenav-panel">
+      <a mat-list-item class="menu-item" *ngFor="let route of routes" [routerLink]="route.path" routerLinkActive="active"
+         (click)="sidenav.mode === 'side' || sidenav.close()">
+        <div class="sidenav-item">
+          <mat-icon>{{ route.icon }}</mat-icon>
+          <span>{{ route.label }}</span>
+        </div>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item class="menu-item" (click)="logout()">
+        <div class="sidenav-item">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </div>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <mat-toolbar class="toolbar toolbar-right">
+      <button
+        mat-icon-button
+        aria-label="Toggle sidenav"
+        *ngIf="!(isMobileApp$ | async)"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>{{title$ | async}}</span>
+    </mat-toolbar>
     <router-outlet></router-outlet>
-  </div>
-  <div class="mobile-menu">
-    <button mat-icon-button class="menu-item" *ngFor="let item of routes" [routerLink]="item.path" routerLinkActive="active">
-      <mat-icon>{{ item.icon }}</mat-icon>
-    </button>
-  </div>
-</ng-container>
-
-<ng-template #webTemplate>
-  <mat-sidenav-container class="sidenav-container">
-    <!-- Sidenav -->
-    <mat-sidenav mode="side" [opened]="true">
-      <mat-nav-list class="sidenav-panel">
-          <a mat-list-item class="menu-item" *ngFor="let route of routes" [routerLink]="route.path" routerLinkActive="active">
-            <div class="sidenav-item">
-              <mat-icon>{{ route.icon }}</mat-icon>
-              <span>{{ route.label }}</span>
-            </div>
-          </a>
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <!-- Main Content -->
-    <mat-sidenav-content class="sidenav-content">
-      <!-- Page Content -->
-      <div class="content">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</ng-template>
+    <div class="mobile-menu" *ngIf="isMobileApp$ | async">
+      <ng-container *ngFor="let item of routes">
+        <button mat-icon-button class="menu-item" *ngIf="item.main" [routerLink]="item.path" routerLinkActive="active">
+          <mat-icon>{{ item.icon }}</mat-icon>
+        </button>
+      </ng-container>
+      <button mat-icon-button class="menu-item" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+
+:host {
+  .wallet-container {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .wallets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .spacer {
+    width: 100%;
+  }
+
+  .list-item-link {
+    margin: 12px 0;
+  }
+
+  .wallet-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .wallet-line {
+    color: map-get(mat.$m2-gray-palette, 600);
+    font-size: 0.9rem;
+  }
+
+  .card:hover {
+    cursor: pointer;
+  }
+
+  .card-header {
+    align-items: center;
+  }
+
+  .card-icon {
+    color: map-get(mat.$m2-blue-palette, 400);
+    display: flex;
+    border: map-get(mat.$m2-gray-palette, 200) 1px solid;
+    border-radius: 50%;
+    padding: 10px;
+    margin-right: 16px;
+  }
+
+  .card-title {
+    font-size: 1em;
+    color: map-get(mat.$m2-gray-palette, 500);
+  }
+
+  .card-subtitle {
+    font-size: 1.3em;
+    color: map-get(mat.$m2-gray-palette, 800);
+    display: flex;
+    gap: 8px;
+
+    .currency {
+      font-size: .8em;
+    }
+  }
+}

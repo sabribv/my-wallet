@@ -1,41 +1,43 @@
-<mat-card class="form-container">
-  <mat-card-header>
-    <mat-card-title>
-      <h5>{{ isEdit ? 'Editar cuenta por pagar' : 'Crear cuenta por pagar' }}</h5>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <mat-label>Gasto</mat-label>
-        <mat-select formControlName="expenseId">
-          <mat-option *ngFor="let expense of expenses$ | async" [value]="expense.id">
-            {{ expense.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+<div class="page-actions" *ngIf="isEdit">
+  <button mat-icon-button (click)="deleteBill(billId)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
 
-      <mat-form-field>
-        <mat-label>Fecha de Vencimiento</mat-label>
-        <input matInput formControlName="dueDate" [matDatepicker]="picker" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+<div class="form-container">
+  <mat-card class="card">
+    <mat-card-content>
+      <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <mat-label>Gasto</mat-label>
+          <mat-select formControlName="expenseId">
+            <mat-option *ngFor="let expense of expenses$ | async" [value]="expense.id">
+              {{ expense.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Monto</mat-label>
-        <input matInput type="number" formControlName="amount" />
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Fecha de Vencimiento</mat-label>
+          <input matInput formControlName="dueDate" [matDatepicker]="picker" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-      <mat-checkbox formControlName="isPaid" color="primary">¿Está pagado?</mat-checkbox>
+        <mat-form-field>
+          <mat-label>Monto</mat-label>
+          <input matInput type="number" formControlName="amount" />
+        </mat-form-field>
 
-      <div class="buttons">
-        <button mat-raised-button color="primary" type="submit" [disabled]="billForm.invalid">
-          Guardar
-        </button>
-        <button mat-button type="button" (click)="onCancel()">Cancelar</button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+        <mat-checkbox formControlName="isPaid" color="primary">¿Está pagado?</mat-checkbox>
 
+        <div class="buttons">
+          <button mat-raised-button color="primary" type="submit" [disabled]="billForm.invalid">
+            Guardar
+          </button>
+          <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

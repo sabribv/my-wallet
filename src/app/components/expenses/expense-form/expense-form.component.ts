@@ -10,6 +10,7 @@ import {ExpenseService} from '@services/expense.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
 import {MatSelectModule} from '@angular/material/select';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-expense-form',
@@ -23,6 +24,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatCheckboxModule,
     MatCardModule,
     MatSelectModule,
+    MatIcon,
   ],
   templateUrl: './expense-form.component.html',
   styleUrl: './expense-form.component.scss'
@@ -76,6 +78,14 @@ export class ExpenseFormComponent implements OnInit {
     } finally {
       this.router.navigate(['/expenses']);
     }
+  }
+
+  deleteExpense(id: string | undefined): void {
+    if (!id) {
+      console.warn('El ID del bill no es válido');
+      return;
+    }
+    this.expensesService.deleteExpense(id);
   }
 
   onCancel() {

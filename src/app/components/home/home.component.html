@@ -1,8 +1,14 @@
-<div class="home-container" [class.mobile]="isMobile$ | async">
-  <div class="metrics" *ngIf="metrics$ | async as metrics">
-    <app-metric type="default" text="Deuda total" [counter]="metrics.total"></app-metric>
-    <app-metric type="warning" text="Próximo a vencer" [counter]="metrics.upcoming"></app-metric>
-    <app-metric type="error" text="Vencido" [counter]="metrics.overdue"></app-metric>
+<ng-template #loading>
+  <div class="progress-bar">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</ng-template>
+
+<div class="home-container" [class.mobile]="isMobile$ | async" *ngIf="metrics$ | async as metrics; else loading">
+  <div class="metrics">
+    <app-metric type="default" text="Deuda total" icon="paid" [counter]="metrics.total"></app-metric>
+    <app-metric type="warning" text="Próximo a vencer" icon="paid" [counter]="metrics.upcoming"></app-metric>
+    <app-metric type="error" text="Vencido" icon="paid" [counter]="metrics.overdue"></app-metric>
   </div>
 
   <ng-container *ngIf="expensesWithNoBills$ | async as expenses">

@@ -1,25 +1,24 @@
-<div class="expenses-container">
-  <div class="title">
-    <h4>Categorías de Gastos</h4>
-    <button mat-fab color="primary" routerLink="/expenses/create">
+<ng-template #loading>
+  <div class="progress-bar">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</ng-template>
+<div class="expenses-container" *ngIf="expenses$ | async as expenses; else loading">
+  <div class="page-actions">
+    <button mat-icon-button routerLink="/expenses/create">
       <mat-icon>add</mat-icon>
     </button>
   </div>
-<!--  <button mat-raised-button color="primary" (click)="openDialog()">Add Expense</button>-->
 
-  <ng-container *ngIf="expenses$ | async as expenses">
+  <div class="expenses-list">
     <mat-card class="section" *ngIf="expenses.length > 0">
       <mat-card-content>
-        <mat-list *ngFor="let expense of expenses">
-          <mat-list-item>
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let expense of expenses" class="list-item-link"
+             [routerLink]="['/expenses/edit', expense.id]">
             <div matListItemTitle class="expense-title">
               <span>{{ expense?.name }}</span>
               <span class="spacer"></span>
-              <button mat-icon-button class="context-menu"
-                      [matMenuTriggerFor]="contextMenu"
-                      [matMenuTriggerData]="{ expense: expense }">
-                <mat-icon>more_vert</mat-icon>
-              </button>
             </div>
             <span matListItemLine class="expense-line">
               <app-status-indicator
@@ -31,22 +30,9 @@
                 type="info">
               </app-status-indicator>
             </span>
-          </mat-list-item>
-        </mat-list>
+          </a>
+        </mat-nav-list>
       </mat-card-content>
     </mat-card>
-  </ng-container>
-
-  <mat-menu #contextMenu="matMenu">
-    <ng-template matMenuContent let-expense="expense">
-      <button mat-menu-item [routerLink]="['/expenses/edit', expense.id]">
-        <mat-icon>edit</mat-icon>
-        <span>Editar</span>
-      </button>
-      <button mat-menu-item (click)="deleteExpense(expense.id)">
-        <mat-icon>delete</mat-icon>
-        <span>Eliminar</span>
-      </button>
-    </ng-template>
-  </mat-menu>
+  </div>
 </div>

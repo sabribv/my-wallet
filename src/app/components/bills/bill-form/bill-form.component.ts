@@ -15,6 +15,7 @@ import {BillsService} from '@services/bill.service';
 import moment from 'moment';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatCardModule} from '@angular/material/card';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-bill-form',
@@ -30,6 +31,7 @@ import {MatCardModule} from '@angular/material/card';
     MatDatepickerModule,
     MatMomentDateModule,
     MatCardModule,
+    MatIcon,
   ],
   templateUrl: './bill-form.component.html',
   styleUrl: './bill-form.component.scss'
@@ -96,6 +98,14 @@ export class BillFormComponent implements OnInit {
     } finally {
       this.router.navigate(['/bills']);
     }
+  }
+
+  deleteBill(id: string | undefined): void {
+    if (!id) {
+      console.warn('El ID del bill no es válido');
+      return;
+    }
+    this.billService.deleteBill(id);
   }
 
   onCancel() {

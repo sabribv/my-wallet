@@ -1,31 +1,37 @@
 @use '@angular/material' as mat;
 
 :host {
+  .card-content {
+    padding: 8px;
+  }
+
   .card {
-    border: 1px solid map-get(mat.$m2-gray-palette, 800);
-    color: map-get(mat.$m2-gray-palette, 800);
-    box-shadow: unset;
+    color: map-get(mat.$m2-gray-palette, 700);
 
-    &.warning {
-      border: 1px solid map-get(mat.$m2-yellow-palette, 800);
-      color: map-get(mat.$m2-yellow-palette, 800);
+    .warning {
+      color: map-get(mat.$m2-yellow-palette, 700);
     }
 
-    &.error {
-      border: 1px solid map-get(mat.$m2-red-palette, 800);
-      color: map-get(mat.$m2-red-palette, 800);
+    .error {
+      color: map-get(mat.$m2-red-palette, 700);
     }
 
-    &.default {
-      border: 1px solid map-get(mat.$m2-blue-palette, 800);
-      color: map-get(mat.$m2-blue-palette, 800);
+    .default {
+      color: map-get(mat.$m2-blue-palette, 700);
     }
 
     .content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 1.1em;
+
+      .first-line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+      }
     }
   }
 }

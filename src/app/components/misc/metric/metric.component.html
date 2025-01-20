@@ -1,7 +1,10 @@
-<mat-card class="card" [class]="type">
-  <mat-card-content>
+<mat-card class="card">
+  <mat-card-content class="card-content">
     <div class="content">
-      <h5>{{ counter | currency }}</h5>
+      <h6 class="first-line">
+        <mat-icon [class]="type" *ngIf="icon">{{ icon }}</mat-icon>
+        <span>{{ counter | number: '1.2-2' }}</span>
+      </h6>
       <span>{{ text }}</span>
     </div>
   </mat-card-content>

@@ -1,0 +1,59 @@
+<div class="page-actions" *ngIf="isEdit">
+  <button mat-icon-button (click)="deleteTransactions()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+
+<div class="form-container">
+  <mat-card class="card" *ngIf="wallet$ | async as wallet">
+    <mat-card-content>
+      <form [formGroup]="walletTransactionForm" (ngSubmit)="onSubmit(wallet)">
+        <mat-tab-group (selectedTabChange)="onSelectedTabChange($event)" #tabGroup>
+          <mat-tab *ngFor="let type of types" [label]="type.label" [disabled]="isEdit">
+            <div class="tab-content">
+              <ng-template
+                [ngTemplateOutlet]="formTemplate"
+                [ngTemplateOutletContext]="{ isTransfer: type.id === 'transfer' }">
+              </ng-template>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+        <ng-template #formTemplate let-isTransfer="isTransfer">
+          <mat-form-field>
+            <mat-label>Fecha</mat-label>
+            <input matInput formControlName="date" [matDatepicker]="picker" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <ng-container *ngIf="isTransfer">
+            <mat-form-field>
+              <mat-label>Destino</mat-label>
+              <mat-select formControlName="toWalletId">
+                <mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">{{ wallet.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+
+          <mat-form-field>
+            <mat-label>Monto</mat-label>
+            <input matInput type="number" formControlName="amount" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Notas</mat-label>
+            <textarea matInput formControlName="note"></textarea>
+          </mat-form-field>
+        </ng-template>
+
+        <div class="buttons">
+          <button mat-raised-button color="primary" type="submit" *ngIf="!isEdit" [disabled]="walletTransactionForm.invalid">
+            Guardar
+          </button>
+          <button mat-button type="button" [routerLink]="['/wallets', wallet.id, 'transactions']">{{ isEdit ? 'Volver' : 'Cancelar' }}</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,60 @@
+<ng-template #loading>
+  <div class="progress-bar">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</ng-template>
+<div *ngIf="wallet$ | async as wallet; else loading" class="container">
+  <div class="toolbar">
+    <button mat-icon-button [routerLink]="['/wallets']">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <span>
+      <h5>{{ wallet.name }}</h5>
+      <span class="subtitle">Balance: {{ wallet.balance | currency }} {{ wallet.currency }}</span>
+    </span>
+    <button mat-icon-button [routerLink]="['/wallets/edit', wallet.id]">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+
+  <div class="wallet-container">
+    <div>
+      <mat-card class="section">
+        <mat-card-header>
+          <mat-card-title class="card-title">
+            <span>Movimientos</span>
+            <button mat-mini-fab color="primary" [routerLink]="['/wallets', wallet.id, 'transactions', 'create']">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container *ngIf="transactions$ | async as transactions; else loadingTemplate">
+            <mat-nav-list *ngIf="transactions.length > 0; else empty">
+              <a mat-list-item *ngFor="let transaction of transactions" class="list-item-link"
+                 [routerLink]="['/wallets', wallet.id, 'transactions', 'view', transaction.id]">
+                <div matListItemTitle class="expense-title">
+                  <span>{{ transaction.note }}</span>
+                  <span class="spacer"></span>
+                  <span> {{ transaction.amount | currency}} {{ transaction.currency }} </span>
+                </div>
+                <span matListItemLine class="expense-line">
+                  <span>{{transaction.date | date}}</span>
+                </span>
+              </a>
+            </mat-nav-list>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <ng-template #loadingTemplate>
+      <mat-spinner diameter="30"></mat-spinner>
+    </ng-template>
+
+    <ng-template #empty>
+      <div class="empty-text">No hay movimientos.</div>
+    </ng-template>
+  </div>
+
+</div>

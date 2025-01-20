@@ -7,14 +7,12 @@
     flex-direction: column;
     gap: 16px;
 
-    .title {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+    .list-item-link {
+      margin: 12px 0;
     }
 
     .bill-title {
+      margin-top: 8px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -22,11 +20,13 @@
     }
 
     .bill-line {
-      margin-top: 20px;
+      margin-bottom: 10px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      color: map-get(mat.$m2-gray-palette, 600);
+      font-size: 0.9rem;
     }
 
     .spacer {

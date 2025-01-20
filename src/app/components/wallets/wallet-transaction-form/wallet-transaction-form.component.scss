@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 :host {
   .form-container {
     padding: 16px;
@@ -8,10 +10,18 @@
     margin: auto;
   }
 
+  .tab-content {
+    padding-top: 24px;
+  }
+
   .buttons {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-top: 1rem;
+  }
+
+  .remove-button {
+    color: map-get(mat.$m2-red-palette, 800);
   }
 }

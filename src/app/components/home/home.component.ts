@@ -10,12 +10,12 @@ import {MetricComponent} from '@components/misc/metric/metric.component';
 import {LayoutService} from '@services/layout.service';
 import {InfoPanelComponent} from '@components/misc/info-panel/info-panel.component';
 import {Expense} from '@models/expense.model';
-import {yearsPerPage} from '@angular/material/datepicker';
+import {MatProgressBar} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatCardModule, MetricComponent, InfoPanelComponent],
+  imports: [CommonModule, MatListModule, MatCardModule, MetricComponent, InfoPanelComponent, MatProgressBar],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

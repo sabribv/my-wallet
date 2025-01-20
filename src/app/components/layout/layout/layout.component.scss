@@ -5,18 +5,42 @@
   flex-direction: column;
   min-height: 100vh;
 
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+
+    &.toolbar-left {
+      background-color: map-get(mat.$m2-blue-palette, 700);
+      color: #fff;
+    }
+
+    &.toolbar-right {
+      background-color: map-get(mat.$m2-blue-palette, 600);
+      color: #fff;
+    }
+  }
+
+  .sidenav {
+    border: unset;
+    background-color: map-get(mat.$m2-gray-palette, 100);
+  }
+
   .sidenav-container {
     display: flex;
     flex: 1;
+    background-color: map-get(mat.$m2-gray-palette, 100);
 
     .sidenav-panel {
-      min-width: 320px;
+      width: 320px;
+      height: calc(100% - 80px);
+      border-right: map-get(mat.$m2-gray-palette, 400) 1px solid;
     }
 
     .sidenav-item {
       display: flex;
       align-items: center;
       gap: 16px;
+      color: map-get(mat.$m2-gray-palette, 800);
     }
   }
 
@@ -28,10 +52,6 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-  }
-
-  .content {
-    padding: 16px;
   }
 
   .spacer {
