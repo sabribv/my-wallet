@@ -31,9 +31,9 @@ export class LayoutComponent {
 
   routes = [
     { path: '/home', label: 'Home', icon: 'home', main: true },
+    { path: '/wallets', label: 'Billeteras', icon: 'wallet', main: true },
     { path: '/bills', label: 'Cuentas por Pagar', icon: 'credit_card', main: true },
     { path: '/expenses', label: 'Categorías de Gastos', icon: 'settings', main: false },
-    { path: '/wallets', label: 'Billeteras', icon: 'wallet', main: true },
   ];
   title$: Observable<string | undefined>;
 

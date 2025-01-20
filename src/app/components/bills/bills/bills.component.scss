@@ -54,6 +54,31 @@
     }
   }
 
+  .filter-panel {
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      color: map-get(mat.$m2-blue-palette, 500);
+    }
+
+    .custom-picker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: map-get(mat.$m2-blue-palette, 500);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
   .month-year-picker {
     mat-datepicker-content {
       .mat-calendar {

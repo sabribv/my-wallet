@@ -4,6 +4,7 @@
   .container {
     padding: 16px;
     border: 1px solid map-get(mat.$m2-gray-palette, 800);
+    border-radius: 4px;
     color: map-get(mat.$m2-gray-palette, 800);
     background-color: #fff;
 

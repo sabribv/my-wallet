@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable, shareReplay, switchMap} from 'rxjs';
 import {Bill, BillWithExpense} from '@models/bill.model';
 import { BillsService } from '@services/bill.service';
@@ -60,11 +60,13 @@ const MY_FORMATS = {
   styleUrls: ['./bills.component.scss'],
 })
 export class BillsComponent {
+  @ViewChild('picker') picker!: MatDatepicker<moment.Moment>;
+
   today = moment().startOf('day').valueOf();
   cashBills$: Observable<BillWithExpense[]>;
   debitBills$: Observable<BillWithExpense[]>;
   expensesWithNoBills$: Observable<string | undefined>;
-  selectedDate: moment.Moment | null = moment();
+  selectedDate: moment.Moment = moment();
   selectedDate$: BehaviorSubject<moment.Moment> = new BehaviorSubject<moment.Moment>(moment());
   metrics$: Observable<{
     total: number,
@@ -130,9 +132,23 @@ export class BillsComponent {
     );
   }
 
+  openPicker() {
+    this.picker.open();
+  }
+
   selectMonthAndYear(normalizedMonth: moment.Moment, datepicker: MatDatepicker<moment.Moment>): void {
-    this.selectedDate = normalizedMonth.clone(); // Guardamos el mes y año seleccionados
-    datepicker.close(); // Cerramos el selector
+    this.selectedDate = normalizedMonth.clone();
+    datepicker.close();
+    this.selectedDate$.next(this.selectedDate);
+  }
+
+  previousMonth() {
+    this.selectedDate.subtract(1, 'month');
+    this.selectedDate$.next(this.selectedDate);
+  }
+
+  nextMonth() {
+    this.selectedDate.add(1, 'month');
     this.selectedDate$.next(this.selectedDate);
   }
 }

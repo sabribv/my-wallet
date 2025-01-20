@@ -11,23 +11,37 @@
     </button>
   </div>
 
-  <div class="month-year-picker">
-    <mat-form-field>
-      <mat-label>Mes y Año</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        [readonly]="true"
-        [value]="selectedDate"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <div class="filter-panel mat-elevation-z1">
+    <button mat-icon-button (click)="previousMonth()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="month-year-picker">
+      <span class="custom-picker" (click)="openPicker()">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [value]="selectedDate"
+          style="opacity: 0; width: 0"
+          aria-hidden="true"
+        />
+        <mat-icon>calendar_month</mat-icon>
+        <span>
+          {{ selectedDate.format('MMM y') }}
+        </span>
+      </span>
+
       <mat-datepicker
         #picker
         startView="multi-year"
         (monthSelected)="selectMonthAndYear($event, picker)"
         panelClass="month-year-picker-panel"
       ></mat-datepicker>
-    </mat-form-field>
+    </div>
+
+    <button mat-icon-button (click)="nextMonth()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </div>
 
   <div class="metrics">
