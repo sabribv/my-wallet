@@ -32,7 +32,9 @@
       </button>
       <span>{{title$ | async}}</span>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div [class.mobile]="isMobileApp$ | async">
+      <router-outlet></router-outlet>
+    </div>
     <div class="mobile-menu" *ngIf="isMobileApp$ | async">
       <ng-container *ngFor="let item of routes">
         <button mat-icon-button class="menu-item" *ngIf="item.main" [routerLink]="item.path" routerLinkActive="active">
