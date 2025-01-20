@@ -72,6 +72,7 @@ export class BillsComponent {
     total: number,
     cash: number,
     debit: number,
+    pending: number,
   }>;
   isMobile$: Observable<boolean>;
 
@@ -122,6 +123,9 @@ export class BillsComponent {
           total: bills.reduce((acc, current) => acc + current.amount, 0),
           cash: cash.reduce((acc, current) => acc + current.amount, 0),
           debit: debit.reduce((acc, current) => acc + current.amount, 0),
+          pending: bills
+            .filter((bill) => !bill.isPaid)
+            .reduce((acc, current) => acc + current.amount, 0),
         }
       })
     )

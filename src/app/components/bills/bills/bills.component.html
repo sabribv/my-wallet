@@ -48,6 +48,7 @@
     <app-metric type="default" text="Total" icon="paid" [counter]="metrics.total"></app-metric>
     <app-metric text="Efectivo" icon="paid" [counter]="metrics.cash"></app-metric>
     <app-metric text="Débito" icon="paid" [counter]="metrics.debit"></app-metric>
+    <app-metric type="warning" text="Pendiente" icon="paid" [counter]="metrics.pending"></app-metric>
   </div>
 
   <ng-container *ngIf="expensesWithNoBills$ | async as expenses">
