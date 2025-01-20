@@ -10,12 +10,13 @@
     </button>
     <span>
       <h5>{{ wallet.name }}</h5>
-      <span class="subtitle">Balance: {{ wallet.balance | currency }} {{ wallet.currency }}</span>
     </span>
     <button mat-icon-button [routerLink]="['/wallets/edit', wallet.id]">
       <mat-icon>edit</mat-icon>
     </button>
   </div>
+
+  <app-metric type="default" text="Balance" icon="paid" [counter]="wallet.balance" [suffix]="wallet.currency"></app-metric>
 
   <div class="wallet-container">
     <div>
@@ -34,8 +35,7 @@
               <a mat-list-item *ngFor="let transaction of transactions" class="list-item-link"
                  [routerLink]="['/wallets', wallet.id, 'transactions', 'view', transaction.id]">
                 <div matListItemTitle class="expense-title">
-                  <span>{{ transaction.note }}</span>
-                  <span class="spacer"></span>
+                  <span class="note">{{ transaction.note }}</span>
                   <span> {{ transaction.amount | currency}} {{ transaction.currency }} </span>
                 </div>
                 <span matListItemLine class="expense-line">

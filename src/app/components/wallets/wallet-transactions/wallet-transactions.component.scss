@@ -15,9 +15,10 @@
     grid-template-columns: 60px auto 60px;
     padding: 16px;
     border-radius: 4px;
+    align-items: center;
 
     h5 {
-      margin-bottom: -5px;
+      margin-bottom: 0;
     }
   }
 
@@ -66,6 +67,14 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    .note {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+
+    }
   }
 
   .expense-line {

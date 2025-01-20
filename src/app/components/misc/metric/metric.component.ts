@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} from "@angular/material/card";
-import {CurrencyPipe, DecimalPipe, NgIf} from '@angular/common';
+import {MatCardModule} from "@angular/material/card";
+import {DecimalPipe, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
@@ -8,7 +8,6 @@ import {MatIcon} from '@angular/material/icon';
   standalone: true,
   imports: [
     MatCardModule,
-    CurrencyPipe,
     MatIcon,
     NgIf,
     DecimalPipe,
@@ -19,6 +18,7 @@ import {MatIcon} from '@angular/material/icon';
 export class MetricComponent {
   @Input() icon: string = '';
   @Input() counter: number = 0;
+  @Input() suffix: string = '';
   @Input() text: string = '';
   @Input() type: 'default' | 'warning' | 'error' | undefined = undefined;
 }

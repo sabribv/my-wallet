@@ -4,6 +4,7 @@
       <h6 class="first-line">
         <mat-icon [class]="type" *ngIf="icon">{{ icon }}</mat-icon>
         <span>{{ counter | number: '1.2-2' }}</span>
+        <span *ngIf="suffix" class="suffix">{{suffix}}</span>
       </h6>
       <span>{{ text }}</span>
     </div>
