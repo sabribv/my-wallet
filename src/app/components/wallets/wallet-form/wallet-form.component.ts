@@ -1,18 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
-import {Wallet} from '@models/wallet.model';
 import {WalletService} from '@services/wallet.service';
-import {MatButton, MatButtonModule} from '@angular/material/button';
-import {MatCard, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} from '@angular/material/card';
-import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
-import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
-import {MatInput, MatInputModule} from '@angular/material/input';
-import {MatOption} from '@angular/material/core';
-import {MatSelect, MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
+import {ConfirmDialogService} from '@components/misc/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-wallet-form',
@@ -41,6 +40,7 @@ export class WalletFormComponent implements OnInit {
     private walletService: WalletService,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmDialogService: ConfirmDialogService
   ) {
     this.walletForm = this.fb.group({
       name: ['', Validators.required],
@@ -88,12 +88,20 @@ export class WalletFormComponent implements OnInit {
     this.router.navigate([route]);
   }
 
-  deleteWallet(): void {
+  async deleteWallet(): Promise<void> {
     if (!this.walletId) {
-      console.warn('El ID del wallet no es válido');
+      console.warn('El ID de wallet no es válido');
       return;
     }
-    this.walletService.deleteWallet(this.walletId);
-    this.router.navigate(['/wallets']);
+
+    const confirmed = await this.confirmDialogService.confirm(
+      'Esta acción eliminará la billetera.',
+      'Eliminar'
+    );
+
+    if (confirmed) {
+      await this.walletService.deleteWallet(this.walletId);
+      await this.router.navigate(['/wallets']);
+    }
   }
 }

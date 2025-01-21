@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
@@ -16,6 +16,7 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/m
 import {MatTab, MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
 import {Wallet} from '@models/wallet.model';
 import {MatIcon} from "@angular/material/icon";
+import {ConfirmDialogService} from '@components/misc/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-wallet-transaction-form',
@@ -25,8 +26,6 @@ import {MatIcon} from "@angular/material/icon";
     MatButton,
     MatCard,
     MatCardContent,
-    MatCardHeader,
-    MatCardTitle,
     MatFormField,
     MatInput,
     MatLabel,
@@ -70,6 +69,7 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
     private walletTransactionService: WalletTransactionService,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmDialogService: ConfirmDialogService
   ) {
     this.walletTransactionForm = this.fb.group({
       walletId: ['', Validators.required],
@@ -189,17 +189,24 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
       return;
     }
 
-    const transactionData = this.walletTransactionForm.getRawValue();
-
-    await this.walletTransactionService.deleteTransaction(this.walletTransactionId);
-    await this.walletService.updateWalletBalance(
-      transactionData.walletId,
-      transactionData.amount * (transactionData.type === 'income' ? -1 : 1)
+    const confirmed = await this.confirmDialogService.confirm(
+      'Esta acción eliminará el movimiento.',
+      'Eliminar'
     );
 
-    if (transactionData.type === 'transfer' && transactionData.toWalletId) {
-      await this.walletService.updateWalletBalance(transactionData.toWalletId, transactionData.amount * -1)
+    if (confirmed) {
+      const transactionData = this.walletTransactionForm.getRawValue();
+
+      await this.walletTransactionService.deleteTransaction(this.walletTransactionId);
+      await this.walletService.updateWalletBalance(
+        transactionData.walletId,
+        transactionData.amount * (transactionData.type === 'income' ? -1 : 1)
+      );
+
+      if (transactionData.type === 'transfer' && transactionData.toWalletId) {
+        await this.walletService.updateWalletBalance(transactionData.toWalletId, transactionData.amount * -1)
+      }
+      await this.router.navigate(['/wallets']);
     }
-    this.router.navigate(['/wallets']);
   }
 }

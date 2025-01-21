@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIcon} from '@angular/material/icon';
+import {ConfirmDialogService} from '@components/misc/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-expense-form',
@@ -39,6 +40,7 @@ export class ExpenseFormComponent implements OnInit {
     private expensesService: ExpenseService,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmDialogService: ConfirmDialogService
   ) {
     this.expenseForm = this.fb.group({
       name: ['', Validators.required],
@@ -80,12 +82,21 @@ export class ExpenseFormComponent implements OnInit {
     }
   }
 
-  deleteExpense(id: string | undefined): void {
+  async deleteExpense(id: string | undefined): Promise<void> {
     if (!id) {
-      console.warn('El ID del bill no es válido');
+      console.warn('El ID de expense no es válido');
       return;
     }
-    this.expensesService.deleteExpense(id);
+
+    const confirmed = await this.confirmDialogService.confirm(
+      'Esta acción eliminará la categoría de gastos.',
+      'Eliminar'
+    );
+
+    if (confirmed) {
+      await this.expensesService.deleteExpense(id);
+      await this.router.navigate(['/expenses']);
+    }
   }
 
   onCancel() {

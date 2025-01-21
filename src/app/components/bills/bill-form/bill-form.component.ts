@@ -16,6 +16,7 @@ import moment from 'moment';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatCardModule} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
+import {ConfirmDialogService} from '@components/misc/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-bill-form',
@@ -48,6 +49,7 @@ export class BillFormComponent implements OnInit {
     private billService: BillsService,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmDialogService: ConfirmDialogService
   ) {
     this.billForm = this.fb.group({
       expenseId: ['', Validators.required],
@@ -100,12 +102,21 @@ export class BillFormComponent implements OnInit {
     }
   }
 
-  deleteBill(id: string | undefined): void {
+  async deleteBill(id: string | undefined): Promise<void> {
     if (!id) {
       console.warn('El ID del bill no es válido');
       return;
     }
-    this.billService.deleteBill(id);
+
+    const confirmed = await this.confirmDialogService.confirm(
+      'Esta acción eliminará la cuenta a pagar.',
+      'Eliminar'
+    );
+
+    if (confirmed) {
+      await this.billService.deleteBill(id);
+      await this.router.navigate(['/bills']);
+    }
   }
 
   onCancel() {
