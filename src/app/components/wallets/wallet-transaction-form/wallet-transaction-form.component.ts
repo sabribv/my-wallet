@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -9,7 +9,7 @@ import {MatSelect} from '@angular/material/select';
 import {AsyncPipe, NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
 import {WalletService} from '@services/wallet.service';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {map, Observable, shareReplay, switchMap, take, tap} from 'rxjs';
+import {map, Observable, shareReplay, Subject, switchMap, take, takeUntil, tap} from 'rxjs';
 import moment from 'moment/moment';
 import {WalletTransactionService} from '@services/wallet-transaction.service';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
@@ -49,7 +49,7 @@ import {ConfirmDialogService} from '@components/misc/confirm-dialog/confirm-dial
   templateUrl: './wallet-transaction-form.component.html',
   styleUrl: './wallet-transaction-form.component.scss'
 })
-export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
+export class WalletTransactionFormComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   isEdit = false;
   walletId!: string;
@@ -63,6 +63,8 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
     { id: 'transfer', label: 'Transferencia'}
   ];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private walletService: WalletService,
@@ -75,8 +77,10 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
       walletId: ['', Validators.required],
       date: [moment(), Validators.required],
       type: ['income', Validators.required],
+      sourceAmount: [0, [Validators.required, Validators.min(1)]],
       toWalletId: [''],
-      amount: [0, Validators.required],
+      fee: [0],
+      destinationAmount: [{value: 0, disabled: true}],
       currency: ['', Validators.required],
       note: '',
     });
@@ -116,14 +120,31 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
         }
       })
     ).subscribe();
+
+    this.walletTransactionForm.valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      const value = this.walletTransactionForm.getRawValue();
+      if(value.type === 'transfer') {
+        this.walletTransactionForm.patchValue({
+          destinationAmount: value.sourceAmount - value.fee ?? 0,
+        }, { emitEvent: false })
+      } else {
+        this.walletTransactionForm.patchValue({
+          fee: 0,
+          destinationAmount: value.sourceAmount,
+        }, { emitEvent: false })
+      }
+    })
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       if (this.walletTransactionId) {
         this.walletTransactionForm.get('date')?.disable();
-        this.walletTransactionForm.get('amount')?.disable();
+        this.walletTransactionForm.get('sourceAmount')?.disable();
         this.walletTransactionForm.get('toWalletId')?.disable();
+        this.walletTransactionForm.get('fee')?.disable();
         this.walletTransactionForm.get('note')?.disable();
         this.loadWalletData();
       }
@@ -140,14 +161,12 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
         this.walletTransactionForm.patchValue({
           ...transaction,
           date: moment(transaction.date),
-        });
-        console.log(this.walletTransactionForm.getRawValue());
+        }, { emitEvent: false });
       }
     });
   }
 
   onSelectedTabChange(event: MatTabChangeEvent) {
-    // debugger
     this.walletTransactionForm.patchValue({
       type: this.types[event.index].id,
     });
@@ -163,28 +182,26 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
     if (this.walletTransactionForm.invalid) return;
 
     const transactionData = {
-      ...this.walletTransactionForm.value,
+      ...this.walletTransactionForm.getRawValue(),
       date: this.walletTransactionForm.value.date.valueOf(),
     };
-
-    const sign = transactionData.type !== 'income' ? -1 : 1;
 
     try {
       if (!this.isEdit) {
         await this.walletTransactionService.addTransaction(transactionData);
-        await this.walletService.updateWalletBalance(this.walletId, transactionData.amount * sign)
-
-        if (transactionData.type === 'transfer' && transactionData.toWalletId) {
-          await this.walletService.updateWalletBalance(transactionData.toWalletId, transactionData.amount)
-        }
       }
     } finally {
       this.router.navigate([`/wallets/${this.walletId}/transactions`]);
     }
   }
 
-  async deleteTransactions() {
-    if (!this.walletTransactionId) {
+  async deleteTransactions(id: string | undefined) {
+    const transaction = {
+      id,
+      ...this.walletTransactionForm.getRawValue()
+    };
+
+    if (!transaction.id) {
       console.warn('El ID del wallet no es válido');
       return;
     }
@@ -195,18 +212,13 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit {
     );
 
     if (confirmed) {
-      const transactionData = this.walletTransactionForm.getRawValue();
-
-      await this.walletTransactionService.deleteTransaction(this.walletTransactionId);
-      await this.walletService.updateWalletBalance(
-        transactionData.walletId,
-        transactionData.amount * (transactionData.type === 'income' ? -1 : 1)
-      );
-
-      if (transactionData.type === 'transfer' && transactionData.toWalletId) {
-        await this.walletService.updateWalletBalance(transactionData.toWalletId, transactionData.amount * -1)
-      }
-      await this.router.navigate(['/wallets']);
+      await this.walletTransactionService.deleteTransaction(transaction);
+      this.router.navigate([`/wallets/${this.walletId}/transactions`]);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

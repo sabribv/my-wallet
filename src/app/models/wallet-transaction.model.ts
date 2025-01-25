@@ -3,7 +3,9 @@ export interface WalletTransaction {
   walletId: string;
   date: number;
   type: 'income' | 'expense' | 'transfer';
-  amount: number;
+  sourceAmount: number;
+  destinationAmount: number;
+  fee?: number;
   currency: string;
   toWalletId?: string;
   note?: string;

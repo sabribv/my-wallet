@@ -1,5 +1,5 @@
 <div class="page-actions" *ngIf="isEdit">
-  <button mat-icon-button (click)="deleteTransactions()">
+  <button mat-icon-button (click)="deleteTransactions(walletTransactionId)">
     <mat-icon>delete</mat-icon>
   </button>
 </div>
@@ -20,31 +20,56 @@
         </mat-tab-group>
 
         <ng-template #formTemplate let-isTransfer="isTransfer">
-          <mat-form-field>
-            <mat-label>Fecha</mat-label>
-            <input matInput formControlName="date" [matDatepicker]="picker" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-
-          <ng-container *ngIf="isTransfer">
+          <div class="form">
             <mat-form-field>
-              <mat-label>Destino</mat-label>
-              <mat-select formControlName="toWalletId">
-                <mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">{{ wallet.name }}</mat-option>
-              </mat-select>
+              <mat-label>Fecha</mat-label>
+              <input matInput formControlName="date" [matDatepicker]="picker" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-          </ng-container>
 
-          <mat-form-field>
-            <mat-label>Monto</mat-label>
-            <input matInput type="number" formControlName="amount" />
-          </mat-form-field>
+            <ng-container *ngIf="isTransfer; else notTranfer">
+              <mat-form-field>
+                <mat-label>Destino</mat-label>
+                <mat-select formControlName="toWalletId">
+                  <mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">{{ wallet.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Notas</mat-label>
-            <textarea matInput formControlName="note"></textarea>
-          </mat-form-field>
+              <div>
+                <mat-form-field>
+                  <mat-label>Monto</mat-label>
+                  <input matInput type="number" formControlName="sourceAmount" />
+                  <span matTextSuffix>{{ wallet.currency }}</span>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Comisión</mat-label>
+                  <input matInput type="number" formControlName="fee" />
+                  <span matTextSuffix>{{ wallet.currency }}</span>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Monto a recibir en destino</mat-label>
+                  <input matInput type="number" formControlName="destinationAmount" />
+                  <span matTextSuffix>{{ wallet.currency }}</span>
+                </mat-form-field>
+              </div>
+            </ng-container>
+
+            <ng-template #notTranfer>
+              <mat-form-field>
+                <mat-label>Monto</mat-label>
+                <input matInput type="number" formControlName="sourceAmount" />
+                <span matTextSuffix>{{ wallet.currency }}</span>
+              </mat-form-field>
+            </ng-template>
+
+            <mat-form-field>
+              <mat-label>Notas</mat-label>
+              <textarea matInput formControlName="note"></textarea>
+            </mat-form-field>
+          </div>
         </ng-template>
 
         <div class="buttons">

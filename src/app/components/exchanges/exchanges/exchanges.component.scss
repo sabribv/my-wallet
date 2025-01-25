@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+
+:host {
+  .exchanges-container {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .exchanges-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .spacer {
+    width: 100%;
+  }
+
+  .exchange-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .exchange-line {
+    margin-top: 24px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: map-get(mat.$m2-gray-palette, 600);
+    font-size: 0.9rem;
+  }
+
+  .exchange-second-line {
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: map-get(mat.$m2-gray-palette, 600);
+    font-size: 0.8rem;
+  }
+
+  .exchange-title, .exchange-line, .exchange-second-line {
+    &:before, &:after {
+      display: none;
+    }
+  }
+}

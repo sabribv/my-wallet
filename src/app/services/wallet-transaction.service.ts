@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/compat/firestore';
-import {catchError, combineLatest, map, Observable, of, switchMap} from 'rxjs';
+import {catchError, combineLatest, lastValueFrom, map, Observable, of, switchMap} from 'rxjs';
 import {AuthService} from '@services/auth.service';
 import {collection} from '../constants/collections';
 import {WalletTransaction} from '@models/wallet-transaction.model';
+import {Wallet} from '@models/wallet.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,12 +14,48 @@ export class WalletTransactionService {
 
   async addTransaction(transaction: WalletTransaction): Promise<void> {
     const user = await this.authService.getCurrentUser();
-    const id = this.firestore.createId();
 
-    return this.firestore
-      .collection(`${collection.users}/${user.uid}/${collection.walletTransactions}`)
-      .doc(id)
-      .set({ ...transaction, id });
+    try {
+      const batch = this.firestore.firestore.batch();
+
+      // Save new transaction
+      const transactionsRef = this.firestore
+        .collection(`${collection.users}/${user.uid}/${collection.walletTransactions}`)
+        .ref;
+
+      const transactionDoc = transactionsRef.doc();
+      batch.set(transactionDoc, transaction);
+      const sign = transaction.type !== 'income' ? -1 : 1;
+
+      // Update source wallet
+      const walletDoc = this.firestore
+        .collection<Wallet>(`${collection.users}/${user.uid}/${collection.wallets}`)
+        .doc(transaction.walletId);
+      const walletSnapshot = await lastValueFrom(walletDoc.get());
+      const wallet = {
+        id: walletSnapshot.id, ...walletSnapshot.data()
+      } as Wallet;
+      wallet.balance += (transaction.sourceAmount * sign);
+      batch.update(walletDoc.ref, wallet);
+
+      // Update destination wallet
+      if (transaction.type === 'transfer' && transaction.toWalletId) {
+        const destinationWalletDoc = this.firestore
+          .collection<Wallet>(`${collection.users}/${user.uid}/${collection.wallets}`)
+          .doc(transaction.toWalletId);
+
+        const destinationWalletSnapshot = await lastValueFrom(destinationWalletDoc.get());
+        const destinationWallet = {
+          id: destinationWalletSnapshot.id, ...destinationWalletSnapshot.data()
+        } as Wallet;
+        destinationWallet.balance += transaction.destinationAmount;
+        batch.update(destinationWalletDoc.ref, destinationWallet);
+      }
+
+      return batch.commit();
+    } catch (error) {
+      console.error('Error al ejecutar el batch:', error);
+    }
   }
 
   getWalletTransactions(walletId: string): Observable<WalletTransaction[]> {
@@ -80,21 +117,49 @@ export class WalletTransactionService {
     )
   }
 
-  async updateTransaction(id: string, transaction: WalletTransaction): Promise<void> {
+  async deleteTransaction(transaction: WalletTransaction): Promise<void> {
     const user = await this.authService.getCurrentUser();
 
-    return this.firestore
-      .collection(`${collection.users}/${user.uid}/${collection.walletTransactions}`)
-      .doc(id)
-      .update(transaction);
-  }
+    try {
+      const batch = this.firestore.firestore.batch();
 
-  async deleteTransaction(id: string): Promise<void> {
-    const user = await this.authService.getCurrentUser();
+      // Save new transaction
+      const transactionRef = this.firestore
+        .collection(`${collection.users}/${user.uid}/${collection.walletTransactions}`)
+        .doc(transaction.id)
+        .ref;
 
-    return this.firestore
-      .collection(`${collection.users}/${user.uid}/${collection.walletTransactions}`)
-      .doc(id)
-      .delete();
+      const sign = transaction.type !== 'income' ? 1 : -1;
+
+      // Update source wallet
+      const walletDoc = this.firestore
+        .collection<Wallet>(`${collection.users}/${user.uid}/${collection.wallets}`)
+        .doc(transaction.walletId);
+      const walletSnapshot = await lastValueFrom(walletDoc.get());
+      const wallet = {
+        id: walletSnapshot.id, ...walletSnapshot.data()
+      } as Wallet;
+      wallet.balance += (transaction.sourceAmount * sign);
+      batch.update(walletDoc.ref, wallet);
+
+      // Update destination wallet
+      if (transaction.type === 'transfer' && transaction.toWalletId) {
+        const destinationWalletDoc = this.firestore
+          .collection<Wallet>(`${collection.users}/${user.uid}/${collection.wallets}`)
+          .doc(transaction.toWalletId);
+
+        const destinationWalletSnapshot = await lastValueFrom(destinationWalletDoc.get());
+        const destinationWallet = {
+          id: destinationWalletSnapshot.id, ...destinationWalletSnapshot.data()
+        } as Wallet;
+        destinationWallet.balance += (transaction.destinationAmount * -1);
+        batch.update(destinationWalletDoc.ref, destinationWallet);
+      }
+
+      batch.delete(transactionRef);
+      return batch.commit();
+    } catch (error) {
+      console.error('Error al ejecutar el batch:', error);
+    }
   }
 }

@@ -3,6 +3,12 @@
 :host {
   .form-container {
     padding: 16px;
+
+    .form > * {
+      width: 100%;
+      display: inline-flex;
+      gap: 8px;
+    }
   }
 
   .card {

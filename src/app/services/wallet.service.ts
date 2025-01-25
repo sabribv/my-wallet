@@ -72,24 +72,6 @@ export class WalletService {
       .update(wallet);
   }
 
-  async updateWalletBalance(walletId: string, amount: number): Promise<void> {
-    const user = await this.authService.getCurrentUser();
-    const walletDoc = this.firestore
-      .collection<Wallet>(`${collection.users}/${user.uid}/${collection.wallets}`)
-      .doc(walletId);
-
-    return lastValueFrom(walletDoc.get()).then((doc) => {
-      if (doc.exists) {
-        const currentBalance = doc.data()?.balance || 0;
-        const newBalance = currentBalance + amount;
-
-        return walletDoc.update({ balance: newBalance });
-      } else {
-        throw new Error('Wallet not found!');
-      }
-    });
-  }
-
   async deleteWallet(id: string): Promise<void> {
     const user = await this.authService.getCurrentUser();
 

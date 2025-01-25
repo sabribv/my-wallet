@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ExpenseService } from '@services/expense.service';
 import {CommonModule} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
@@ -33,7 +32,7 @@ import {MatProgressBar} from '@angular/material/progress-bar';
 export class ExpensesComponent {
   expenses$: Observable<Expense[]>;
 
-  constructor(private dialog: MatDialog, private expenseService: ExpenseService) {
+  constructor(private expenseService: ExpenseService) {
     this.expenses$ = this.expenseService.getAllExpenses().pipe(
       map(expenses => expenses.sort((a,b) => a.name.localeCompare(b.name)))
     );

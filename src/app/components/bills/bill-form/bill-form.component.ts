@@ -54,7 +54,7 @@ export class BillFormComponent implements OnInit {
     this.billForm = this.fb.group({
       expenseId: ['', Validators.required],
       dueDate: [moment(), Validators.required],
-      amount: [0, Validators.required],
+      amount: [0, [Validators.required, Validators.min(1)]],
       isPaid: [false],
     });
 

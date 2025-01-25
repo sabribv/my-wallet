@@ -31,5 +31,9 @@
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+
+    &:after, &:before {
+      display: none;
+    }
   }
 }

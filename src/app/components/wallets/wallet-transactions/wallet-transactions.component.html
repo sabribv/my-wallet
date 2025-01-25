@@ -36,7 +36,7 @@
                  [routerLink]="['/wallets', wallet.id, 'transactions', 'view', transaction.id]">
                 <div matListItemTitle class="expense-title">
                   <span class="note">{{ transaction.note }}</span>
-                  <span> {{ transaction.amount | currency}} {{ transaction.currency }} </span>
+                  <span> {{ transaction.sourceAmount | currency}} {{ transaction.currency }} </span>
                 </div>
                 <span matListItemLine class="expense-line">
                   <span>{{transaction.date | date}}</span>

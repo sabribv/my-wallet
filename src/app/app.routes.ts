@@ -13,6 +13,8 @@ import {WalletTransactionsComponent} from '@components/wallets/wallet-transactio
 import {
   WalletTransactionFormComponent
 } from '@components/wallets/wallet-transaction-form/wallet-transaction-form.component';
+import {ExchangesComponent} from '@components/exchanges/exchanges/exchanges.component';
+import {ExchangeFormComponent} from '@components/exchanges/exchange-form/exchange-form.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +40,9 @@ export const routes: Routes = [
       { path: 'wallets/:id/transactions', component: WalletTransactionsComponent, title: 'Movimientos' },
       { path: 'wallets/:walletId/transactions/create', component: WalletTransactionFormComponent, title: 'Crear movimiento' },
       { path: 'wallets/:walletId/transactions/view/:id', component: WalletTransactionFormComponent, title: 'Ver movimiento' },
+      { path: 'exchanges', component: ExchangesComponent, title: 'Cambio de divisas' },
+      { path: 'exchanges/create', component: ExchangeFormComponent, title: 'Crear cambio de divisas' },
+      { path: 'exchanges/edit/:id', component: ExchangeFormComponent, title: 'Editar cambio de divisas' },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },

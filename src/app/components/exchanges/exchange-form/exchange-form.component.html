@@ -1,0 +1,74 @@
+<div class="page-actions" *ngIf="isEdit">
+  <button mat-icon-button (click)="deleteExchange(exchangeId)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+
+<div class="form-container">
+  <mat-card class="card">
+    <mat-card-content>
+      <form [formGroup]="exchangeForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <mat-label>Fecha</mat-label>
+          <input matInput formControlName="date" [matDatepicker]="picker" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Billetera de origen</mat-label>
+          <mat-select formControlName="walletId">
+            <mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">
+              {{ wallet.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div>
+          <mat-form-field>
+            <mat-label>Monto a cambiar</mat-label>
+            <input matInput type="number" formControlName="sourceAmount" />
+            <span matTextSuffix>{{ exchangeForm.value['sourceCurrency'] }}</span>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Tasa de cambio</mat-label>
+            <input matInput type="number" formControlName="rate" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field>
+          <mat-label>Billetera destino</mat-label>
+          <mat-select formControlName="toWalletId">
+            <mat-option [value]="''">-</mat-option>
+            <mat-option *ngFor="let wallet of toWallets$ | async" [value]="wallet.id">
+              {{ wallet.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Monto a recibir</mat-label>
+          <input matInput type="number" formControlName="destinationAmount" />
+          <span matTextSuffix>{{ exchangeForm.value['destinationCurrency'] }}</span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Notas</mat-label>
+          <textarea matInput formControlName="note"></textarea>
+        </mat-form-field>
+
+        <ng-container *ngIf="!isEdit">
+          <mat-checkbox color="primary" formControlName="createTransactions">Generar los movimientos entre billeteras</mat-checkbox>
+        </ng-container>
+
+        <div class="buttons">
+          <button mat-raised-button color="primary" type="submit" *ngIf="!isEdit" [disabled]="exchangeForm.invalid">
+            Guardar
+          </button>
+          <button mat-button type="button" (click)="onCancel()">{{ isEdit ? 'Volver' : 'Cancelar' }}</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
