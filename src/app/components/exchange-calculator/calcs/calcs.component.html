@@ -18,11 +18,11 @@
              [routerLink]="['/calculator/edit', calculation.id]">
             <div matListItemTitle class="list-item-title">
               <span>{{ calculation?.note }}</span>
-              <span>{{ calculation?.amount | currency }} USD</span>
+              <span>$ {{ calculation?.amount | number: '1.2-2' }} USD</span>
             </div>
             <span matListItemLine class="list-item-line">
               <span>{{ calculation.date | date }}</span>
-              <span>{{ calculation.amount * calculation.rate | currency }} ARS</span>
+              <span>$ {{ calculation.amount * calculation.rate | number: '1.2-2' }} ARS</span>
             </span>
           </a>
         </mat-nav-list>

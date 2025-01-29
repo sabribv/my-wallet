@@ -1,4 +1,4 @@
-import {ApplicationConfig, provideZoneChangeDetection, isDevMode, importProvidersFrom} from '@angular/core';
+import {ApplicationConfig, provideZoneChangeDetection, isDevMode, importProvidersFrom, LOCALE_ID} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -35,6 +35,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: appearance
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'es' },
   ]
 };

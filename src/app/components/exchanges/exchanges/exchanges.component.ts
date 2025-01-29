@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {combineLatest, map, Observable} from 'rxjs';
 import {Exchange} from '@models/exchange.model';
 import {ExchangeService} from '@services/exchange.service';
-import {AsyncPipe, CurrencyPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
@@ -39,7 +39,8 @@ interface ExchangesExtended extends Exchange {
     StatusIndicatorComponent,
     DatePipe,
     CurrencyPipe,
-    MatDivider
+    MatDivider,
+    DecimalPipe
   ],
   templateUrl: './exchanges.component.html',
   styleUrl: './exchanges.component.scss'

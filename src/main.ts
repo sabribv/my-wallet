@@ -4,6 +4,11 @@ import { AppComponent } from './app/app.component';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onMessage } from 'firebase/messaging';
 import { firebaseConfig } from 'src/app/firebase-config';
+import moment from 'moment';
+import 'moment/locale/es';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es';
+import {registerLocaleData} from '@angular/common';
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
@@ -31,6 +36,9 @@ const messaging = getMessaging(firebaseApp);
 onMessage(messaging, (payload) => {
   console.log('Mensaje recibido en primer plano:', payload);
 });
+
+registerLocaleData(localeEs, 'es', localeEsExtra);
+moment.locale('es');
 
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));

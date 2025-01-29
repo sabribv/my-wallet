@@ -18,18 +18,18 @@
              [routerLink]="['/exchanges/edit', exchange.id]">
             <div matListItemTitle class="exchange-title">
               <span>{{ exchange?.note }}</span>
-              <span>{{ exchange?.sourceAmount | currency }} {{ exchange?.sourceCurrency }}</span>
+              <span>$ {{ exchange?.sourceAmount | number: '1.2-2' }} {{ exchange?.sourceCurrency }}</span>
             </div>
             <span matListItemLine class="exchange-line">
               <app-status-indicator [text]="'De: ' + exchange.sourceWallet?.name"></app-status-indicator>
               <ng-container *ngIf="exchange.destinationWallet">
                 <mat-icon>arrow_forward</mat-icon>
-                <app-status-indicator [text]="'A: ' + exchange.destinationWallet?.name"></app-status-indicator>
+                <app-status-indicator [text]="'A: ' + exchange.destinationWallet.name"></app-status-indicator>
               </ng-container>
             </span>
             <span matListItemLine class="exchange-second-line">
               <span>{{ exchange.date | date }}</span>
-              <span>{{ exchange?.destinationAmount | currency }} {{ exchange?.destinationCurrency }}</span>
+              <span>$ {{ exchange?.destinationAmount | number: '1.2-2' }} {{ exchange?.destinationCurrency }}</span>
             </span>
           </a>
         </mat-nav-list>

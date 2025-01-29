@@ -30,7 +30,7 @@
             <div matListItemTitle class="bill-title">
                 <span>{{ bill.expense?.name }}</span>
                 <span class="spacer"></span>
-                <span>{{ bill.amount | currency}}</span>
+                <span>$ {{ bill.amount | number: '1.2-2'}}</span>
             </div>
             <span matListItemLine class="bill-line">{{ bill.dueDate | date}}</span>
           </mat-list-item>
@@ -52,7 +52,7 @@
             <div matListItemTitle class="bill-title">
               <span>{{ bill.expense?.name }}</span>
               <span class="spacer"></span>
-              <span>{{ bill.amount | currency}}</span>
+              <span>$ {{ bill.amount | number: '1.2-2'}}</span>
             </div>
             <span matListItemLine class="bill-line">{{ bill.dueDate | date}}</span>
           </mat-list-item>

@@ -7,7 +7,7 @@ import {Wallet} from '@models/wallet.model';
 import {WalletService} from '@services/wallet.service';
 import {MatIconButton, MatMiniFabButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {AsyncPipe, CurrencyPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, NgForOf, NgIf} from '@angular/common';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatListItem, MatListItemLine, MatListItemTitle, MatNavList} from '@angular/material/list';
 import {MatProgressBar} from "@angular/material/progress-bar";
@@ -38,6 +38,7 @@ import {MetricComponent} from '@components/misc/metric/metric.component';
     MatProgressBar,
     MatProgressSpinner,
     MetricComponent,
+    DecimalPipe,
   ],
   templateUrl: './wallet-transactions.component.html',
   styleUrl: './wallet-transactions.component.scss'

@@ -27,7 +27,7 @@
         />
         <mat-icon>calendar_month</mat-icon>
         <span>
-          {{ selectedDate.format('MMM y') }}
+          {{ selectedDate.format('MMMM y') | titlecase }}
         </span>
       </span>
 
@@ -84,7 +84,7 @@
               <div class="bill-title">
                 <span>{{ bill.expense?.name }}</span>
                 <span class="spacer"></span>
-                <span>{{ bill.amount | currency}}</span>
+                <span>$ {{ bill.amount | number: '1.2-2' }}</span>
               </div>
               <div class="bill-line">
                 <span>{{ bill.dueDate | date}}</span>
@@ -111,7 +111,7 @@
   <ng-container *ngIf="showEmptyState$ | async">
     <div class="empty-state">
       <mat-icon>credit_card</mat-icon>
-      <h6>No hay cuentas a pagas para el mes de {{selectedDate.format('MMMM')}}.</h6>
+      <h6>No hay cuentas a pagar para el mes de {{selectedDate.format('MMMM')}}.</h6>
       <span>Cuando crees cuentas a pagar, podrás verlas aca.</span>
     </div>
   </ng-container>

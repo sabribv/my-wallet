@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AsyncPipe, CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
@@ -21,24 +21,25 @@ interface ExchangeCalculatorExtended extends ExchangeCalculator {
 @Component({
   selector: 'app-calcs',
   standalone: true,
-    imports: [
-        AsyncPipe,
-        CurrencyPipe,
-        DatePipe,
-        MatCard,
-        MatCardContent,
-        MatIcon,
-        MatIconButton,
-        MatListItem,
-        MatListItemLine,
-        MatListItemTitle,
-        MatNavList,
-        MatProgressBar,
-        NgForOf,
-        NgIf,
-        RouterLink,
-        StatusIndicatorComponent
-    ],
+  imports: [
+    AsyncPipe,
+    CurrencyPipe,
+    DatePipe,
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    MatIconButton,
+    MatListItem,
+    MatListItemLine,
+    MatListItemTitle,
+    MatNavList,
+    MatProgressBar,
+    NgForOf,
+    NgIf,
+    RouterLink,
+    StatusIndicatorComponent,
+    DecimalPipe
+  ],
   templateUrl: './calcs.component.html',
   styleUrl: './calcs.component.scss'
 })

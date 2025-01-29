@@ -127,7 +127,7 @@ export class WalletTransactionFormComponent implements AfterViewInit, OnInit, On
       const value = this.walletTransactionForm.getRawValue();
       if(value.type === 'transfer') {
         this.walletTransactionForm.patchValue({
-          destinationAmount: value.sourceAmount - value.fee ?? 0,
+          destinationAmount: value.sourceAmount - (value.fee ?? 0),
         }, { emitEvent: false })
       } else {
         this.walletTransactionForm.patchValue({
