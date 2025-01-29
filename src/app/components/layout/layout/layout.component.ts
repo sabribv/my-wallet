@@ -28,12 +28,12 @@ import {combineLatest, filter, map, Observable, startWith, switchMap} from 'rxjs
 })
 export class LayoutComponent {
   layoutService = inject(LayoutService);
-
   routes = [
     { path: '/home', label: 'Home', icon: 'home', main: true },
     { path: '/wallets', label: 'Billeteras', icon: 'wallet', main: true },
     { path: '/bills', label: 'Cuentas por Pagar', icon: 'credit_card', main: true },
     { path: '/exchanges', label: 'Cambio de divisas', icon: 'currency_exchange', main: false },
+    { path: '/calculator', label: 'Calculadora de cambio', icon: 'calculate', main: false },
     { path: '/expenses', label: 'Categorías de Gastos', icon: 'settings', main: false },
   ];
   title$: Observable<string | undefined>;

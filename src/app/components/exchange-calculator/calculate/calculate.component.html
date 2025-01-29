@@ -1,0 +1,143 @@
+<div class="page-actions" *ngIf="isEdit">
+  <button mat-icon-button (click)="delete(calcId)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+
+<div class="form-container">
+  <mat-accordion class="accordion" [multi]="isEdit">
+    <mat-expansion-panel #step0 [expanded]="step() === 0 || isEdit" [disabled]="isEdit" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <div class="panel-header">
+          <mat-panel-title>Gastos del mes</mat-panel-title>
+          <mat-panel-description *ngIf="!step0.expanded">
+            <span>{{ totalExpensesUsd() | number: '1.2-2' }} USD</span>
+          </mat-panel-description>
+        </div>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="arsForm">
+        <mat-form-field>
+          <mat-label>Gastos en efectivo</mat-label>
+          <input matInput type="number" formControlName="cashExpenses">
+          <span matTextSuffix>ARS</span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Facturación</mat-label>
+          <input matInput type="number" formControlName="billing">
+          <span matTextSuffix>ARS</span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Monto extra</mat-label>
+          <input matInput type="number" formControlName="extra">
+          <span matTextSuffix>ARS</span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Tasa de cambio</mat-label>
+          <input matInput type="number" formControlName="rate">
+          <span matTextSuffix>ARS</span>
+        </mat-form-field>
+
+        <div class="amount-line">
+          <span>Gasto total</span>
+          <span>{{ totalExpensesArs() | number: '1.2-2' }} ARS</span>
+        </div>
+
+        <div class="amount-line">
+          <span></span>
+          <span>{{ totalExpensesUsd() | number: '1.2-2' }} USD</span>
+        </div>
+      </form>
+      <mat-action-row *ngIf="!isEdit">
+        <button mat-button [disabled]="arsForm.invalid" (click)="nextStep()">Continuar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel #step1 [disabled]="arsForm.invalid || isEdit" [expanded]="step() === 1 || isEdit" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <div class="panel-header">
+          <mat-panel-title>Transferencia</mat-panel-title>
+          <mat-panel-description *ngIf="!step1.expanded">
+            <span>{{ exchangeAmount() | number: '1.2-2' }} USD</span>
+          </mat-panel-description>
+        </div>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="usdForm">
+        <mat-form-field>
+          <mat-label>Monto a recibir</mat-label>
+          <input matInput type="number" formControlName="netAmount">
+          <span matTextSuffix>USD</span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Comisión</mat-label>
+          <input matInput type="number" formControlName="commission">
+          <span matTextSuffix>%</span>
+        </mat-form-field>
+
+        <div class="amount-line">
+          <span>Monto a transferir</span>
+          <span>{{ exchangeAmount() | number: '1.2-2' }} USD</span>
+        </div>
+      </form>
+
+      <mat-action-row *ngIf="!isEdit">
+        <button mat-button (click)="prevStep()">Anterior</button>
+        <button mat-button [disabled]="usdForm.invalid" (click)="nextStep()">Continuar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [disabled]="arsForm.invalid || usdForm.invalid || isEdit" [expanded]="step() === 2 || isEdit" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Guardar cálculo</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-checkbox
+        color="primary"
+        [(ngModel)]="saveTransactions"
+        [disabled]="isEdit"
+        (change)="onSaveTransactionsChange($event)"
+      >
+        Generar movimientos entre billeteras
+      </mat-checkbox>
+
+      <form [formGroup]="transactionsForm">
+        <mat-form-field>
+          <mat-label>Billetera de origen</mat-label>
+          <mat-select formControlName="walletId">
+            <mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id" [disabled]="wallet.balance < exchangeAmount()">
+              {{ wallet.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Billetera de destino</mat-label>
+          <mat-select formControlName="toWalletId">
+            <mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">
+              {{ wallet.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Notas</mat-label>
+          <textarea matInput formControlName="note"></textarea>
+        </mat-form-field>
+      </form>
+
+      <mat-action-row *ngIf="!isEdit">
+        <button mat-button (click)="prevStep()">Anterior</button>
+        <button mat-button [disabled]="transactionsForm.invalid" (click)="onSubmit()">Guardar cálculo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="buttons">
+    <button mat-stroked-button type="button" (click)="onCancel()">{{ isEdit ? 'Volver' : 'Cancelar' }}</button>
+  </div>
+</div>

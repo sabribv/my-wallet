@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+
+:host {
+  .container {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .spacer {
+    width: 100%;
+  }
+
+  .list-item-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .list-item-line {
+    margin-top: 24px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: map-get(mat.$m2-gray-palette, 600);
+    font-size: 0.8rem;
+  }
+
+  //.exchange-second-line {
+  //  margin-top: 0;
+  //  margin-bottom: 10px;
+  //  display: flex;
+  //  flex-direction: row;
+  //  justify-content: space-between;
+  //  align-items: center;
+  //  color: map-get(mat.$m2-gray-palette, 600);
+  //  font-size: 0.8rem;
+  //}
+
+  .list-item-title, .list-item-line {
+    &:before, &:after {
+      display: none;
+    }
+  }
+}

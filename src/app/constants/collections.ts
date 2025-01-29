@@ -6,4 +6,5 @@ export enum collection {
   wallets = 'wallets',
   walletTransactions = 'transactions',
   exchanges = 'exchanges',
+  exchangeCalculators = 'exchange-calculators',
 }

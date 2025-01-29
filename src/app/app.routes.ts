@@ -15,6 +15,8 @@ import {
 } from '@components/wallets/wallet-transaction-form/wallet-transaction-form.component';
 import {ExchangesComponent} from '@components/exchanges/exchanges/exchanges.component';
 import {ExchangeFormComponent} from '@components/exchanges/exchange-form/exchange-form.component';
+import {CalculateComponent} from '@components/exchange-calculator/calculate/calculate.component';
+import {CalcsComponent} from '@components/exchange-calculator/calcs/calcs.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +45,9 @@ export const routes: Routes = [
       { path: 'exchanges', component: ExchangesComponent, title: 'Cambio de divisas' },
       { path: 'exchanges/create', component: ExchangeFormComponent, title: 'Crear cambio de divisas' },
       { path: 'exchanges/edit/:id', component: ExchangeFormComponent, title: 'Editar cambio de divisas' },
+      { path: 'calculator', component: CalcsComponent, title: 'Cálculos de cambio de divisas' },
+      { path: 'calculator/create', component: CalculateComponent, title: 'Calculadora' },
+      { path: 'calculator/edit/:id', component: CalculateComponent, title: 'Calculadora' },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
