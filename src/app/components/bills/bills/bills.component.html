@@ -107,4 +107,12 @@
       </mat-card-content>
     </mat-card>
   </ng-template>
+
+  <ng-container *ngIf="showEmptyState$ | async">
+    <div class="empty-state">
+      <mat-icon>credit_card</mat-icon>
+      <h6>No hay cuentas a pagas para el mes de {{selectedDate.format('MMMM')}}.</h6>
+      <span>Cuando crees cuentas a pagar, podrás verlas aca.</span>
+    </div>
+  </ng-container>
 </div>

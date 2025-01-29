@@ -32,7 +32,7 @@ export class WalletsComponent {
 
   constructor(private walletService: WalletService) {
     this.wallets$ = this.walletService.getAllWallets().pipe(
-      map(wallets => wallets.sort((a,b) => a.name.localeCompare(b.name)))
+      map(wallets => wallets.sort((a,b) => a.name.localeCompare(b.name))),
     );
   }
 }

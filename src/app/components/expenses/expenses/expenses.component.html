@@ -11,7 +11,7 @@
   </div>
 
   <div class="expenses-list">
-    <mat-card class="section" *ngIf="expenses.length > 0">
+    <mat-card class="section" *ngIf="expenses.length > 0; else emptyState">
       <mat-card-content>
         <mat-nav-list>
           <a mat-list-item *ngFor="let expense of expenses" class="list-item-link"
@@ -34,5 +34,13 @@
         </mat-nav-list>
       </mat-card-content>
     </mat-card>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <mat-icon>settings</mat-icon>
+        <h6>No tenés categorías de gastos.</h6>
+        <span>Cuando crees categorías, podrás verlas aca.</span>
+      </div>
+    </ng-template>
   </div>
 </div>

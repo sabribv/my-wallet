@@ -69,3 +69,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .progress-bar {
   width: 100%;
 }
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 36px;
+  color: map-get(mat.$m2-gray-palette, 700);
+  background-color: map-get(mat.$m2-gray-palette, 50);
+  border-radius: 4px;
+  align-items: center;
+  padding: 24px;
+
+  .mat-icon {
+    color: map-get(mat.$m2-gray-palette, 500);
+    font-size: 80px;
+    height: 80px;
+    width: 80px;
+  }
+
+  & > * {
+    text-align: center;
+  }
+}

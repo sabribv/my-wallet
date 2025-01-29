@@ -34,7 +34,7 @@ export class ExpensesComponent {
 
   constructor(private expenseService: ExpenseService) {
     this.expenses$ = this.expenseService.getAllExpenses().pipe(
-      map(expenses => expenses.sort((a,b) => a.name.localeCompare(b.name)))
+      map(expenses => expenses.sort((a,b) => a.name.localeCompare(b.name))),
     );
   }
 }

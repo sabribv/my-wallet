@@ -31,7 +31,7 @@
         </mat-card-header>
         <mat-card-content>
           <ng-container *ngIf="transactions$ | async as transactions; else loadingTemplate">
-            <mat-nav-list *ngIf="transactions.length > 0; else empty">
+            <mat-nav-list *ngIf="transactions.length > 0; else emptyState">
               <a mat-list-item *ngFor="let transaction of transactions" class="list-item-link"
                  [routerLink]="['/wallets', wallet.id, 'transactions', 'view', transaction.id]">
                 <div matListItemTitle class="expense-title">
@@ -49,11 +49,17 @@
     </div>
 
     <ng-template #loadingTemplate>
-      <mat-spinner diameter="30"></mat-spinner>
+      <div class="loading-spinner">
+        <mat-spinner diameter="30"></mat-spinner>
+      </div>
     </ng-template>
 
-    <ng-template #empty>
-      <div class="empty-text">No hay movimientos.</div>
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <mat-icon>settings</mat-icon>
+        <h6>No hay movimientos.</h6>
+        <span>Cuando crees movimientos, podrás verlos aca.</span>
+      </div>
     </ng-template>
   </div>
 

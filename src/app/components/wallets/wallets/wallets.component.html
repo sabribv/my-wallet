@@ -12,23 +12,33 @@
   </div>
 
   <div class="wallets-list">
-    <mat-card class="card" *ngFor="let wallet of wallets" [routerLink]="['/wallets', wallet.id, 'transactions']">
-      <mat-card-header class="card-header">
-        <div class="card-icon">
-          <mat-icon >wallet</mat-icon>
-        </div>
-        <mat-card-title-group>
-          <mat-card-title class="card-title">{{ wallet.name }}</mat-card-title>
-          <mat-card-subtitle class="card-subtitle">
-            <span>$</span>
-            <span>
-              {{ wallet.balance | number:'1.2-2' }}
-            </span>
-            <span class="currency">{{ wallet.currency }}</span>
-          </mat-card-subtitle>
-        </mat-card-title-group>
-      </mat-card-header>
-      <mat-card-content></mat-card-content>
-    </mat-card>
+    <ng-container *ngIf="wallets.length > 0; else emptyState">
+      <mat-card class="card" *ngFor="let wallet of wallets" [routerLink]="['/wallets', wallet.id, 'transactions']">
+        <mat-card-header class="card-header">
+          <div class="card-icon">
+            <mat-icon >wallet</mat-icon>
+          </div>
+          <mat-card-title-group>
+            <mat-card-title class="card-title">{{ wallet.name }}</mat-card-title>
+            <mat-card-subtitle class="card-subtitle">
+              <span>$</span>
+              <span>
+                {{ wallet.balance | number:'1.2-2' }}
+              </span>
+              <span class="currency">{{ wallet.currency }}</span>
+            </mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content></mat-card-content>
+      </mat-card>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <mat-icon>wallet</mat-icon>
+        <h6>No tenés billeteras.</h6>
+        <span>Cuando crees billeteras, podrás verlas aca.</span>
+      </div>
+    </ng-template>
   </div>
 </div>

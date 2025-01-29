@@ -86,8 +86,8 @@
     gap: 10px;
   }
 
-  .empty-text {
-    font-style: italic;
-    color: map-get(mat.$m2-gray-palette, 500);
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
   }
 }

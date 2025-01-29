@@ -66,6 +66,7 @@ export class BillsComponent {
   cashBills$: Observable<BillWithExpense[]>;
   debitBills$: Observable<BillWithExpense[]>;
   expensesWithNoBills$: Observable<string | undefined>;
+  showEmptyState$: Observable<boolean>;
   selectedDate: moment.Moment = moment();
   selectedDate$: BehaviorSubject<moment.Moment> = new BehaviorSubject<moment.Moment>(moment());
   metrics$: Observable<{
@@ -128,12 +129,14 @@ export class BillsComponent {
             .reduce((acc, current) => acc + current.amount, 0),
         }
       })
-    )
+    );
 
     this.expensesWithNoBills$ = this.selectedDate$.pipe(
       switchMap((date) => this.billsService.getExpensesWithNoBills(date.month(), date.year())),
       map((expenses: Expense[] | null) => expenses?.map((expense: Expense) => expense.name).join(', ')),
     );
+
+    this.showEmptyState$ = bills$.pipe(map(bills => !bills.length));
   }
 
   openPicker() {
